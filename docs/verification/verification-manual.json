@@ -1,0 +1,14 @@
+{
+  "brightcove": [
+    {
+      "height": 511,
+      "paused": false,
+      "ready": 4,
+      "time": 27.316439,
+      "width": 908
+    }
+  ],
+  "youtube": "실제 클릭 후 서로 다른 재생 장면 확인. youtube-playing.png",
+  "mp4": "원본 PC/MO URL HEAD HTTP403, 원본 재생 검증 미완료",
+  "fullscreen": "CSS 보정 제외 조건 구현. 실제 fullscreen 진입 검증은 미실행"
+}

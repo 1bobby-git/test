@@ -1,0 +1,814 @@
+[
+  {
+    "name": "carousel 1440 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 8,
+      "view": 1,
+      "group": 1
+    }
+  },
+  {
+    "name": "carousel 1440 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 104
+      },
+      "after": {
+        "w": 1425,
+        "h": 104
+      }
+    }
+  },
+  {
+    "name": "carousel 1440 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "line",
+      "width": 117.625
+    }
+  },
+  {
+    "name": "carousel 1440 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 manual stop",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 refresh retains manual pause",
+    "status": "PASS"
+  },
+  {
+    "name": "media 1440 slide 1 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "VIDEO"
+    }
+  },
+  {
+    "name": "media 1440 slide 2 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "VIDEO"
+    }
+  },
+  {
+    "name": "media 1440 slide 3 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "IFRAME"
+    }
+  },
+  {
+    "name": "media 1440 slide 4 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "IFRAME"
+    }
+  },
+  {
+    "name": "media 1440 slide 5 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "DIV"
+    }
+  },
+  {
+    "name": "media 1440 slide 6 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "media": [
+        1425,
+        801.5625
+      ],
+      "tag": "DIV"
+    }
+  },
+  {
+    "name": "media 1440 rapid leave keeps inactive preview",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 1440 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "carousel 1440 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "carousel 1440 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "carousel 1440 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "carousel 390 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 8,
+      "view": 1,
+      "group": 1
+    }
+  },
+  {
+    "name": "carousel 390 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 202
+      },
+      "after": {
+        "w": 375,
+        "h": 202
+      }
+    }
+  },
+  {
+    "name": "carousel 390 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "dot",
+      "width": 16
+    }
+  },
+  {
+    "name": "carousel 390 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 manual stop",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 refresh retains manual pause",
+    "status": "PASS"
+  },
+  {
+    "name": "media 390 slide 1 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "VIDEO"
+    }
+  },
+  {
+    "name": "media 390 slide 2 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "VIDEO"
+    }
+  },
+  {
+    "name": "media 390 slide 3 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "IFRAME"
+    }
+  },
+  {
+    "name": "media 390 slide 4 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "IFRAME"
+    }
+  },
+  {
+    "name": "media 390 slide 5 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "DIV"
+    }
+  },
+  {
+    "name": "media 390 slide 6 fills area",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        462.84375,
+        720
+      ],
+      "media": [
+        462.84375,
+        720
+      ],
+      "tag": "DIV"
+    }
+  },
+  {
+    "name": "media 390 rapid leave keeps inactive preview",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel 390 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "carousel 390 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "carousel 390 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "carousel 390 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "column 1440 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 4,
+      "view": 2,
+      "group": 2
+    }
+  },
+  {
+    "name": "column 1440 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1440,
+        "h": 177
+      },
+      "after": {
+        "w": 1440,
+        "h": 177
+      }
+    }
+  },
+  {
+    "name": "column 1440 retained .bundle__visual-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 708,
+        "h": 689.671875
+      },
+      "after": {
+        "w": 708,
+        "h": 689.671875
+      }
+    }
+  },
+  {
+    "name": "column 1440 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "line",
+      "width": 160
+    }
+  },
+  {
+    "name": "column 1440 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 manual stop",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 refresh retains manual pause",
+    "status": "PASS"
+  },
+  {
+    "name": "column 1440 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "column 1440 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "column 1440 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "column 1440 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "column 390 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 4,
+      "view": 1.15,
+      "group": 1
+    }
+  },
+  {
+    "name": "column 390 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 265
+      },
+      "after": {
+        "w": 375,
+        "h": 265
+      }
+    }
+  },
+  {
+    "name": "column 390 retained .bundle__visual-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 324.515625,
+        "h": 451.4375
+      },
+      "after": {
+        "w": 324.515625,
+        "h": 451.4375
+      }
+    }
+  },
+  {
+    "name": "column 390 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "dot",
+      "width": 16
+    }
+  },
+  {
+    "name": "column 390 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 manual stop",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 refresh retains manual pause",
+    "status": "PASS"
+  },
+  {
+    "name": "column 390 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "column 390 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "column 390 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "column 390 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "bentfit 1440 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 4,
+      "view": 3,
+      "group": 3
+    }
+  },
+  {
+    "name": "bentfit 1440 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1440,
+        "h": 161
+      },
+      "after": {
+        "w": 1440,
+        "h": 161
+      }
+    }
+  },
+  {
+    "name": "bentfit 1440 retained .bundle__visual-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 464,
+        "h": 521.703125
+      },
+      "after": {
+        "w": 464,
+        "h": 521.703125
+      }
+    }
+  },
+  {
+    "name": "bentfit 1440 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "line",
+      "width": 160
+    }
+  },
+  {
+    "name": "bentfit 1440 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 autoplay OFF preserved",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 1440 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "bentfit 1440 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "bentfit 1440 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "bentfit 1440 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "bentfit 390 initialized",
+    "status": "PASS",
+    "detail": {
+      "slides": 4,
+      "view": 1.15,
+      "group": 1
+    }
+  },
+  {
+    "name": "bentfit 390 original options",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 retained .headline-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 202
+      },
+      "after": {
+        "w": 375,
+        "h": 202
+      }
+    }
+  },
+  {
+    "name": "bentfit 390 retained .bundle__visual-area",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 324.515625,
+        "h": 516.6875
+      },
+      "after": {
+        "w": 324.515625,
+        "h": 516.6875
+      }
+    }
+  },
+  {
+    "name": "bentfit 390 repeat init uses same instance",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 repeat setup has no extra listeners",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 independent indicator theme",
+    "status": "PASS",
+    "detail": {
+      "type": "dot",
+      "width": 16
+    }
+  },
+  {
+    "name": "bentfit 390 line fill supported",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 independent indicator hide",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 reverse indicator theme",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 bullet navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 autoplay OFF preserved",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit 390 idle mutation bounded",
+    "status": "PASS",
+    "detail": {
+      "mutations": 0,
+      "windowMs": 450
+    }
+  },
+  {
+    "name": "bentfit 390 boundary 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "type": "line"
+    }
+  },
+  {
+    "name": "bentfit 390 boundary 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "bentfit 390 no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  }
+]

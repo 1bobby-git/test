@@ -1,0 +1,412 @@
+[
+  {
+    "name": "1440 slide 0 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      }
+    }
+  },
+  {
+    "name": "1440 slide 1 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 150
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 1 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 2 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 150
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 2 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 3 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 152
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 3 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 4 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 152
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 4 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 5 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 16
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 5 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 6 collapsed desktop height repaired",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 16
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "previewRatio": 1.7777777777777777
+    }
+  },
+  {
+    "name": "1440 slide 6 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        1425,
+        801.5625
+      ],
+      "player": [
+        1425,
+        801.5625
+      ],
+      "viewport": 1440
+    }
+  },
+  {
+    "name": "1440 slide 7 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 1425,
+        "h": 801.5625
+      },
+      "after": {
+        "w": 1425,
+        "h": 801.5625
+      }
+    }
+  },
+  {
+    "name": "390 slide 0 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 210.9375
+      },
+      "after": {
+        "w": 375,
+        "h": 210.9375
+      }
+    }
+  },
+  {
+    "name": "390 slide 1 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 1 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 2 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 2 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 3 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 3 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 4 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 4 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 5 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 5 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 6 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  },
+  {
+    "name": "390 slide 6 player fits",
+    "status": "PASS",
+    "detail": {
+      "visual": [
+        375,
+        720
+      ],
+      "player": [
+        375,
+        720
+      ],
+      "viewport": 390
+    }
+  },
+  {
+    "name": "390 slide 7 outer retained",
+    "status": "PASS",
+    "detail": {
+      "before": {
+        "w": 375,
+        "h": 720
+      },
+      "after": {
+        "w": 375,
+        "h": 720
+      }
+    }
+  }
+]
