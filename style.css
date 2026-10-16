@@ -1,1 +1,13 @@
 s
+aaa
+/* New Carousel */
+.rvmp-cmpnt[class*="cmpnt-new-"] {
+    --pt: 70px;
+    --pb: 70px;
+    --bt: 0px;
+    --bb: 0px;
+    padding-top: var(--pt);
+    padding-bottom: var(--pb);
+}
+
+aaaaa
