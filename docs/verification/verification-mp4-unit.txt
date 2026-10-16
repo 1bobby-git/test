@@ -1,0 +1,13 @@
+PASS MP4 AutoON playing click stops and shows preview
+PASS MP4 AutoON stop then resume
+PASS MP4 AutoOFF keeps existing play and reset-stop
+PASS MP4 rapid play-stop rejects SDK delayed play
+PASS MP4 cancels pending swiper reset timer
+PASS MP4 manual stop rejects SDK scroll and resize play and restores UI
+PASS MP4 destroy restores original native play
+PASS MP4 same-active refresh preserves manual stop
+PASS MP4 auto policy resumes after actual leave and reentry
+PASS YouTube AutoON remains delegated
+PASS YouTube AutoOFF keeps manual stop
+PASS BC AutoON remains separate player request path
+12 pass / 0 fail
