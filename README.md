@@ -8,9 +8,10 @@
 - `revamp-new-column.html`: 2열 및 기존 모바일 Swiper 옵션 유지.
 - `revamp-new-benefit-card.html`: 3열 및 autoplay:false 유지. 전달받은 파일명 유지.
 - `style.css`: 세 타입 공통 스타일. 파생 페이지에 누락된 스타일 연결과 jQuery 의존성 보완.
-- `common.js` → `video.js` → 각 HTML 하단 호출 스크립트 순서. `async` 사용 금지.
+- 리소스 주소는 원본처럼 `/sec/...` 및 `//images.samsung.com/...` 형태다. HTML에 추가했던 삼성 본사이트 절대 도메인은 제거했다.
+- 각 HTML 내부 공통 블록 → 영상 블록 → 호출 블록 순서. `async` 사용 금지.
 
-기존처럼 호출 스크립트가 DOMContentLoaded 콜백을 먼저 등록하고, 그 다음 `NewCarouselSetup.common()`과 `NewCarouselSetup.video()`를 호출한다. 각 콜백 안에서 영상 생성 → `initComponentSwiper()` → `refreshComponentSwiper()` 순서를 유지한다. 여러 컴포넌트를 한 페이지에 배치할 때 공통 파일은 한 번만 로드하고 section id와 영상 id를 각각 고유하게 생성한다. Setup 객체는 중복 설치 방지 상태를 보존하므로 삭제하지 않는다.
+각 HTML은 공통 블록 → 영상 블록 → 호출 블록 순서다. 호출 블록은 DOMContentLoaded 콜백을 먼저 등록한 직후 `NewCarouselSetup.common()`과 `NewCarouselSetup.video()`를 호출한다. 각 콜백 안에서 영상 생성 → `initComponentSwiper()` → `refreshComponentSwiper()` 순서를 유지한다. 여러 컴포넌트를 한 페이지에 배치할 때 공통/영상 블록은 페이지에 한 번씩 포함하고 section id와 영상 id를 각각 고유하게 생성한다. Setup 객체는 중복 설치 방지 상태를 보존하므로 삭제하지 않는다.
 
 ## BO indicator 적용
 
@@ -52,9 +53,17 @@ indicator의 기기 구분은 Mobile 800px 이하 / PC 801px 이상이다. 기�
 
 운영 전달 시 두 파일 및 root 플래그를 제외하고 내부망의 원래 의존성으로 검증한다. 이 보정은 원본 영상/인증/외부 서비스 접근 문제를 해결하는 코드가 아니다.
 
+## 전달 구성
+
+실제 적용에 필요한 파일은 HTML 3개와 `style.css`이며, 삼성 공통 리소스 의존성은 각 HTML에 그대로 연결되어 있다. 공통·영상 로직은 HTML 안에 포함되어 별도 `common.js` 또는 `video.js` 파일을 전달하지 않는다. `preview-media-compat.css/js`와 `data-preview-media-compat`는 검토 환경용이므로 내부망 검증 후 운영 전달에서 제외한다.
+
+## 전달 구성
+
+실제 적용에 필요한 파일은 HTML 3개와 `style.css`, 각 HTML에 연결된 삼성 공통 CSS/JS 리소스다. 공통 JS 의존성은 jQuery, jQuery UI, Swiper, `base.js`, `newComponent.js`이며 페이지 내에 그대로 연결되어 있다. 공통·영상 로직은 HTML 안에 포함되어 별도 `common.js` 또는 `video.js` 파일을 전달하지 않는다. `preview-media-compat.css/js`와 `data-preview-media-compat`는 검토 환경용이므로 내부망 검증 후 운영 전달에서 제외한다.
+
 ## 검증 결과와 남은 범위
 
-- `node --check common.js`, `video.js`, `preview-media-compat.js`: 모두 exit 0.
+- 세 HTML에서 공통·영상 인라인 블록 6개와 호출 블록 3개를 추출해 `node --check` 실행: 모두 exit 0.
 - 앱 내 Chromium에서 회귀 112 PASS / 0 FAIL, 수명·경계 집중 검사 36 PASS / 0 FAIL, 영상 외곽·플레이어 크기 검사 28 PASS / 0 FAIL. 총 176 PASS / 0 FAIL. `docs/verification/`에 JSON 결과와 화면 근거 저장.
 - 1440/390px에서 제목 및 카드 영역의 원본 스크립트 비교, 열 수/간격, indicator 양방향 테마 변경·기기별 표시, 800/801px 전환, 불릿 이동, 정지 후 refresh, 중복 파일 로드/초기화, 1장→2장 Ajax 갱신, 제거/같은 id 재삽입을 검사했다.
 - 6개 영상 슬라이드의 실제 플레이어와 visual 크기 일치를 PC/Mobile에서 확인. 정지 상태 450ms 동안 DOM mutation 0~2회로 무한 반복 징후가 없었다. 이 측정은 장기 성능 보증이 아니다.
@@ -67,4 +76,9 @@ indicator의 기기 구분은 Mobile 800px 이하 / PC 801px 이상이다. 기�
 미리보기 주소: `http://127.0.0.1:8765/revamp-new-carousel.html`, `/revamp-new-column.html`, `/revamp-new-benefit-card.html`.
 
 
-로컬 확인: 저장소 폴더에서 `python -m http.server 8765 --bind 127.0.0.1` 실행 후 위 HTML 주소에 접속한다. 기존 미리보기 서버를 사용하는 경우 포트 충돌에 유의한다.
+로컬 검토 서버는 `/sec/` 요청을 삼성 본사이트에 연결해야 한다. 현재 작업의 검토 서버에서만 이 경로 연결을 제공하며 전달 HTML의 상대경로는 그대로 유지한다. 운영 삼성 도메인에서는 기존 경로를 사용한다.
+
+## 인라인 복원 및 MP4 Auto ON 정지 보완
+- 공통/영상 스크립트를 각 HTML에 직접 포함했다. 별도 common.js와 video.js는 필요 없다.
+- MP4 Auto ON 버튼은 원본 .kvSlide 위임에 기대지 않고 수동 제어한다. 중지 후 SDK의 지연 재생과 같은 활성 슬라이드의 refresh/resize를 차단하고, 실제 슬라이드 이탈 후 재진입 시 원래 자동재생 정책을 따른다.
+- 현재 수정의 검증: 인라인 9개 구문 검사, 브라우저 스모크 21 PASS, MP4 회귀 fixture 12 PASS. 실제 video 요소는 검증용 합성 WebM 콘텐츠로 재생→정지→SDK 재생 요청 차단→수동 재개를 확인했다. 원본 MP4 403과 구분한 검사다.

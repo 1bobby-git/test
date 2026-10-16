@@ -1,0 +1,34 @@
+{
+  "fixture": "검증용 합성 WebM 콘텐츠를 MP4/video 플레이어 경로에서 사용",
+  "beforeFix": {
+    "button": "kvVideoBtn play",
+    "paused": false,
+    "time": 0.505333
+  },
+  "afterFix": [
+    {
+      "paused": false,
+      "step": "before stop",
+      "time": 0.015007
+    },
+    {
+      "button": "kvVideoBtn pause",
+      "paused": true,
+      "step": "after stop",
+      "time": 0
+    },
+    {
+      "button": "kvVideoBtn pause",
+      "paused": true,
+      "step": "after SDK delayed play request",
+      "time": 0
+    },
+    {
+      "button": "kvVideoBtn play",
+      "paused": false,
+      "step": "after manual resume",
+      "time": 0.303689
+    }
+  ],
+  "originalMp4": "기존 원본 URL의 외부 접근 403과 구분한 제어 검사"
+}
