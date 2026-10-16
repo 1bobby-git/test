@@ -1,0 +1,248 @@
+[
+  {
+    "name": "carousel resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "carousel resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "carousel resize 390",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 390,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "carousel resize 1440",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 1440,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "carousel resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "carousel resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "carousel duplicate file load",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel single slide hides controls",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel refresh added slide",
+    "status": "PASS",
+    "detail": {
+      "bullets": 2
+    }
+  },
+  {
+    "name": "carousel removed root destroys instance",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel same id remount",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "column resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "column resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "column resize 390",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 390,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "column resize 1440",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 1440,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "column resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "column resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "column duplicate file load",
+    "status": "PASS"
+  },
+  {
+    "name": "column single slide hides controls",
+    "status": "PASS"
+  },
+  {
+    "name": "column refresh added slide",
+    "status": "PASS",
+    "detail": {
+      "bullets": 2
+    }
+  },
+  {
+    "name": "column removed root destroys instance",
+    "status": "PASS"
+  },
+  {
+    "name": "column same id remount",
+    "status": "PASS"
+  },
+  {
+    "name": "column no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  },
+  {
+    "name": "bentfit resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "bentfit resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "bentfit resize 390",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 390,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "bentfit resize 1440",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 1440,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "bentfit resize 800",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 800,
+      "mobile": true,
+      "type": "line"
+    }
+  },
+  {
+    "name": "bentfit resize 801",
+    "status": "PASS",
+    "detail": {
+      "innerWidth": 801,
+      "mobile": false,
+      "type": "dot"
+    }
+  },
+  {
+    "name": "bentfit duplicate file load",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit single slide hides controls",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit refresh added slide",
+    "status": "PASS",
+    "detail": {
+      "bullets": 2
+    }
+  },
+  {
+    "name": "bentfit removed root destroys instance",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit same id remount",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit no component runtime errors",
+    "status": "PASS",
+    "detail": []
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "mobile": "dot",
+    "pc": "line",
+    "theme": "line",
+    "type": "line",
+    "width": 1200
+  },
+  {
+    "theme": "dot",
+    "type": "dot",
+    "width": 390
+  },
+  {
+    "theme": "dot",
+    "type": "dot",
+    "width": 800
+  },
+  {
+    "theme": "line",
+    "type": "line",
+    "width": 801
+  }
+]

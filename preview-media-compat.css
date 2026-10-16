@@ -1,0 +1,34 @@
+/* 검토 환경 전용. 내부망에서 검증한 후 이 파일과 JS, root 플래그를 제거한다.
+ * 외곽은 원래 PC/MO 미리보기 비율과 모바일 최소 높이를 유지한다.
+ * 재생/중지, preview 표시, opacity/visibility는 기존 영상 스크립트가 소유한다.
+ * fullscreen 또는 Brightcove fullscreen 동안은 보정하지 않는다. */
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvItem .visual-area:has(.kvVideo) {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto !important;
+    block-size: auto !important;
+    aspect-ratio: var(--preview-media-ratio, 16 / 9);
+}
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > .target,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > iframe,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > video,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > .video-js,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo .vjs-tech,
+[data-preview-media-compat="on"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > .previewBox {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    block-size: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    aspect-ratio: auto !important;
+}
+[data-preview-media-compat="on"] .kvVideo .previewImg,
+[data-preview-media-compat="on"] .kvVideo .previewImg picture {display:block;width:100%;height:100%;}
+[data-preview-media-compat="on"] .kvVideo > video,
+[data-preview-media-compat="on"] .kvVideo .vjs-tech {object-fit:cover;}
