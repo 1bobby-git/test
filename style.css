@@ -1,5 +1,4 @@
-s
-aaa
+
 /* New Carousel */
 .rvmp-cmpnt[class*="cmpnt-new-"] {
     --pt: 70px;
@@ -9,5 +8,19 @@ aaa
     padding-top: var(--pt);
     padding-bottom: var(--pb);
 }
-
-aaaaa
+.rvmp-cmpnt[class*="cmpnt-new-"].pt-none,.rvmp-cmpnt[class*="cmpnt-new-"] .pt-none {--pt: 0;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pt-nrw,.rvmp-cmpnt[class*="cmpnt-new-"] .pt-nrw {--pt: 40px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pt-wide,.rvmp-cmpnt[class*="cmpnt-new-"] .pt-wide {--pt: 70px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pt-vwide,.rvmp-cmpnt[class*="cmpnt-new-"] .pt-vwide {--pt: 100px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pb-none,.rvmp-cmpnt[class*="cmpnt-new-"] .pb-none {--pb: 0;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pb-nrw,.rvmp-cmpnt[class*="cmpnt-new-"] .pb-nrw {--pb: 40px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pb-wide,.rvmp-cmpnt[class*="cmpnt-new-"] .pb-wide {--pb: 70px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].pb-vwide,.rvmp-cmpnt[class*="cmpnt-new-"] .pb-vwide {--pb: 100px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npt_none,.rvmp-cmpnt[class*="cmpnt-new-"] .npt_none {--bt: 0;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npt_nrw,.rvmp-cmpnt[class*="cmpnt-new-"] .npt_nrw {--bt: 40px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npt_wide,.rvmp-cmpnt[class*="cmpnt-new-"] .npt_wide {--bt: 80px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npt_vwide,.rvmp-cmpnt[class*="cmpnt-new-"] .npt_vwide {--bt: 160px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npm_none,.rvmp-cmpnt[class*="cmpnt-new-"] .npm_none {--bb: 0;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npm_nrw,.rvmp-cmpnt[class*="cmpnt-new-"] .npm_nrw {--bb: 40px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npm_wide,.rvmp-cmpnt[class*="cmpnt-new-"] .npm_wide {--bb: 80px;}
+.rvmp-cmpnt[class*="cmpnt-new-"].npm_vwide,.rvmp-cmpnt[class*="cmpnt-new-"] .npm_vwide {--bb: 160px;}
