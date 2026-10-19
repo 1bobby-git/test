@@ -45,7 +45,7 @@
     <script src="/sec/static/_script/base.js"></script>
     <!-- New Component JS -->
     <script src="/sec/static/_script/newComponent.js"></script>
-    <link rel="stylesheet" href="./style.css?v=20261019-1">
+    <link rel="stylesheet" href="./style.css?v=20261019-4">
 </head>
 
 <body>
@@ -1828,7 +1828,7 @@ Object.assign(window.NewCarouselSetup, {
                     naturalBox(box.parentElement);
                     var inner = root.querySelector('.innr');
                     if (inner) naturalBox(inner);
-                    var slides = box.querySelectorAll('.swiper-wrapper > .kvItem.swiper-slide');
+                    var slides = box.querySelectorAll('.swiper-wrapper > .swiper-slide');
                     var nodes, i, j;
                     // 교체·삭제된 슬라이드는 관찰 대상과 참조 목록에서 해제한다.
                     if (state.ro) {
@@ -1841,9 +1841,9 @@ Object.assign(window.NewCarouselSetup, {
                     for (i = 0; i < slides.length; i += 1) {
                         naturalBox(slides[i]);
                         spacer(slides[i]);
-                        nodes = slides[i].querySelectorAll('.visual-area, .bundle-area > .title-area, .bundle-area > .sub-title-area, .bundle-area > .description-area, .bundle-area > .btn-area, .bundle-area > .disclaimer-area');
+                        nodes = slides[i].querySelectorAll('.visual-area, .bundle__visual-area, .bundle-area > .title-area, .bundle-area > .sub-title-area, .bundle-area > .description-area, .bundle-area > .btn-area, .bundle-area > .disclaimer-area');
                         for (j = 0; j < nodes.length; j += 1) {
-                            if (matches(nodes[j], '.visual-area')) media(nodes[j]);
+                            if (matches(nodes[j], '.visual-area, .bundle__visual-area')) media(nodes[j]);
                             else if (matches(nodes[j], '.title-area, .sub-title-area, .description-area, .btn-area, .disclaimer-area')) naturalBox(nodes[j]);
                         }
                         if (state.ro && state.observed.indexOf(slides[i]) < 0) { state.observed.push(slides[i]); state.ro.observe(slides[i]); }
@@ -1851,8 +1851,17 @@ Object.assign(window.NewCarouselSetup, {
                     var slide = sw && sw.slides && sw.slides[sw.activeIndex];
                     var wrapper = box.querySelector('.swiper-wrapper');
                     if (!slide || !wrapper || !slide.offsetWidth) return;
-                    var s = win.getComputedStyle(slide);
-                    var height = Math.ceil(slide.offsetHeight + (parseFloat(s.marginTop) || 0) + (parseFloat(s.marginBottom) || 0)) + 'px';
+                    // BO: 여러 장/부분 노출은 현재 viewport와 겹치는 모든 slide의 최대 높이.
+                    // 이미지·폰트의 지연 로드는 각 slide ResizeObserver가 다시 측정한다.
+                    var bounds = box.getBoundingClientRect();
+                    var maximum = 0;
+                    for (i = 0; i < slides.length; i += 1) {
+                        var rect = slides[i].getBoundingClientRect();
+                        if (slides[i] !== slide && (rect.right <= bounds.left + 1 || rect.left >= bounds.right - 1)) continue;
+                        var s = win.getComputedStyle(slides[i]);
+                        maximum = Math.max(maximum, slides[i].offsetHeight + (parseFloat(s.marginTop) || 0) + (parseFloat(s.marginBottom) || 0));
+                    }
+                    var height = Math.ceil(maximum) + 'px';
                     clearStyle(wrapper, heightProperties);
                     css(wrapper, '--nc-active-height', height);
                 } finally { state.measuring = false; }
