@@ -1,0 +1,82 @@
+[
+  {
+    "n": 4,
+    "overflow": false,
+    "player": 802,
+    "slide": 1016,
+    "theme": "line",
+    "visual": 802,
+    "width": 1440,
+    "wrapper": 1016
+  },
+  {
+    "n": 5,
+    "overflow": false,
+    "player": 802,
+    "slide": 1016,
+    "theme": "line",
+    "visual": 802,
+    "width": 1440,
+    "wrapper": 1016
+  },
+  {
+    "n": 6,
+    "overflow": false,
+    "player": 802,
+    "slide": 1016,
+    "theme": "line",
+    "visual": 802,
+    "width": 1440,
+    "wrapper": 1016
+  },
+  {
+    "n": 7,
+    "overflow": false,
+    "player": 802,
+    "slide": 1016,
+    "theme": "line",
+    "visual": 802,
+    "width": 1440,
+    "wrapper": 1016
+  },
+  {
+    "n": 4,
+    "overflow": false,
+    "player": 675,
+    "slide": 1108,
+    "theme": "dot",
+    "visual": 675,
+    "width": 390,
+    "wrapper": 1108
+  },
+  {
+    "n": 5,
+    "overflow": false,
+    "player": 675,
+    "slide": 1108,
+    "theme": "dot",
+    "visual": 675,
+    "width": 390,
+    "wrapper": 1108
+  },
+  {
+    "n": 6,
+    "overflow": false,
+    "player": 675,
+    "slide": 1108,
+    "theme": "dot",
+    "visual": 675,
+    "width": 390,
+    "wrapper": 1108
+  },
+  {
+    "n": 7,
+    "overflow": false,
+    "player": 675,
+    "slide": 1108,
+    "theme": "dot",
+    "visual": 675,
+    "width": 390,
+    "wrapper": 1108
+  }
+]
