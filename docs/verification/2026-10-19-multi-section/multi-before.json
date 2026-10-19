@@ -1,0 +1,16 @@
+[
+  {
+    "name": "six sections initialized",
+    "status": "FAIL",
+    "detail": 2
+  },
+  {
+    "name": "unique IDs",
+    "status": "FAIL"
+  },
+  {
+    "name": "video targets created once",
+    "status": "FAIL",
+    "detail": 6
+  }
+]
