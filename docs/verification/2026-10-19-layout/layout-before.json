@@ -1,0 +1,60 @@
+[
+  {
+    "name": "column PC tallest visible slide",
+    "status": "FAIL",
+    "detail": {
+      "wrapper": 730,
+      "max": 1394,
+      "visible": 2,
+      "heights": [
+        730,
+        1394
+      ]
+    }
+  },
+  {
+    "name": "column all slides observed",
+    "status": "FAIL",
+    "detail": 4
+  },
+  {
+    "name": "column font fallback",
+    "status": "PASS",
+    "detail": "SamsungOneKorean, Dotum, 돋움, sans-serif"
+  },
+  {
+    "name": "column late image growth",
+    "status": "FAIL",
+    "detail": {
+      "wrapper": 730,
+      "max": 1866,
+      "visible": 2,
+      "heights": [
+        730,
+        1866
+      ]
+    }
+  },
+  {
+    "name": "column mobile visible slide coverage",
+    "status": "FAIL",
+    "detail": {
+      "wrapper": 483,
+      "max": 970,
+      "visible": 2,
+      "heights": [
+        483,
+        970
+      ]
+    }
+  },
+  {
+    "name": "column manual stop survives resize",
+    "status": "PASS",
+    "detail": {
+      "running": false,
+      "active": 0,
+      "after": 0
+    }
+  }
+]

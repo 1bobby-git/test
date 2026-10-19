@@ -1,0 +1,131 @@
+[
+  {
+    "name": "column PC tallest visible slide",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 1604,
+      "max": 1604,
+      "visible": 2,
+      "heights": [
+        952,
+        1604
+      ]
+    }
+  },
+  {
+    "name": "column all slides observed",
+    "status": "PASS",
+    "detail": 4
+  },
+  {
+    "name": "column PC legacy headline size",
+    "status": "PASS",
+    "detail": "46px"
+  },
+  {
+    "name": "column font fallback",
+    "status": "PASS",
+    "detail": "SamsungOneKorean, Dotum, 돋움, sans-serif"
+  },
+  {
+    "name": "column late image growth",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 2076,
+      "max": 2076,
+      "visible": 2,
+      "heights": [
+        952,
+        2076
+      ]
+    }
+  },
+  {
+    "name": "column mobile legacy headline size",
+    "status": "PASS",
+    "detail": "30px"
+  },
+  {
+    "name": "column mobile visible slide coverage",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 1226,
+      "max": 1226,
+      "visible": 2,
+      "heights": [
+        711,
+        1226
+      ]
+    }
+  },
+  {
+    "name": "column manual stop survives resize",
+    "status": "PASS",
+    "detail": {
+      "running": false,
+      "active": 0,
+      "after": 0
+    }
+  },
+  {
+    "name": "bentfit PC tallest visible slide",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 851,
+      "max": 851,
+      "visible": 3,
+      "heights": [
+        387,
+        851,
+        387
+      ]
+    }
+  },
+  {
+    "name": "bentfit all slides observed",
+    "status": "PASS",
+    "detail": 4
+  },
+  {
+    "name": "bentfit PC legacy headline size",
+    "status": "PASS",
+    "detail": "46px"
+  },
+  {
+    "name": "bentfit font fallback",
+    "status": "PASS",
+    "detail": "SamsungOneKorean, Dotum, 돋움, sans-serif"
+  },
+  {
+    "name": "bentfit late image growth",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 1160,
+      "max": 1160,
+      "visible": 3,
+      "heights": [
+        387,
+        1160,
+        387
+      ]
+    }
+  },
+  {
+    "name": "bentfit mobile legacy headline size",
+    "status": "PASS",
+    "detail": "30px"
+  },
+  {
+    "name": "bentfit mobile visible slide coverage",
+    "status": "PASS",
+    "detail": {
+      "wrapper": 811,
+      "max": 811,
+      "visible": 2,
+      "heights": [
+        270,
+        811
+      ]
+    }
+  }
+]
