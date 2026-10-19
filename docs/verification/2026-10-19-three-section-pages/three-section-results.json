@@ -1,0 +1,100 @@
+[
+  {
+    "name": "column three sections initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "column one shared script set",
+    "status": "PASS"
+  },
+  {
+    "name": "column unique IDs",
+    "status": "PASS"
+  },
+  {
+    "name": "column three independent instances",
+    "status": "PASS"
+  },
+  {
+    "name": "column autoplay defaults",
+    "status": "PASS"
+  },
+  {
+    "name": "column middle navigation isolated",
+    "status": "PASS",
+    "detail": [
+      0,
+      2,
+      0
+    ]
+  },
+  {
+    "name": "column pagination independent",
+    "status": "PASS"
+  },
+  {
+    "name": "column PC height covers visible slides",
+    "status": "PASS"
+  },
+  {
+    "name": "column mobile height covers visible slides",
+    "status": "PASS"
+  },
+  {
+    "name": "column stops survive responsive resize",
+    "status": "PASS"
+  },
+  {
+    "name": "column repeat init reuses all instances",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit three sections initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit one shared script set",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit unique IDs",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit three independent instances",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit autoplay defaults",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit middle navigation isolated",
+    "status": "PASS",
+    "detail": [
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "name": "benefit pagination independent",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit PC height covers visible slides",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit mobile height covers visible slides",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit stops survive responsive resize",
+    "status": "PASS"
+  },
+  {
+    "name": "benefit repeat init reuses all instances",
+    "status": "PASS"
+  }
+]
