@@ -33,3 +33,14 @@ MP4 제어 브라우저 검사는 외부 원본 접근 제한을 분리하기 �
 이전 2026-10-16 검증 자료는 `docs/verification/`에 보존한다. 당시 결과가 현재 변경 전체를 재검증한 수치는 아니다. 최신 근거는 `docs/verification/2026-10-19/`에 저장한다.
 
 로컬 검토 서버는 `/sec/`를 삼성 본사이트로 연결하고 HTTP localhost에서 protocol-relative CDN을 HTTPS로 해석해야 한다. 전달 HTML에는 이 로컬 연결 코드를 포함하지 않는다.
+
+
+## 2026-10-19 내부망 MP4 호환 보완 (native-first 2026-10-19.2)
+
+내부망 복사본에서 원형 버튼 클릭 후 아이콘도 그대로이고 재생도 계속된다는 사용자 보고에 따라, 공개 SDK의 `kvVideoPlayer.obj`와 `item.sort`를 MP4 수동 제어의 필수 조건에서 제거했다. `.kvVideo data-video-provider="mp4"`를 권장하며, 기존 markup의 직접 자식 native video도 인식한다. SDK 조회/API 예외가 있어도 실제 video.pause()를 먼저 호출하고 버튼·미리보기·접근성 이름을 직접 동기화한다. 수동 재생도 native play()를 사용한다. 기존 SDK 정지/미리보기 연동은 오류가 native 제어를 취소하지 않는 범위에서 호출한다. YouTube/Brightcove 분기 및 높이 CSS는 유지했다.
+
+`node tests/mp4-controls.cjs`: 20 PASS / 0 FAIL. 공개 registry 없음, 다른 MP4 타입명, SDK 정지 예외에서 기존 코드의 실패를 재현한 뒤 통과했다. 재생 Promise 거부 뒤 한 번의 클릭으로 재시도할 수 있고, 지연 재생 차단도 play() Promise 계약을 유지한다.
+
+Codex Chromium에서 H.264 MP4와 private registry를 쓰는 테스트 SDK로 수정 전(아이콘 play 유지/paused=false)과 수정 후(아이콘 pause/paused=true/currentTime=0)를 비교했다. 같은 환경에서 SDK 재생 요청 차단, Enter 재개, Space 정지 및 한국어 접근성 이름을 확인했다. 공개 SDK의 원래 초기화 경로에서도 정지/재개를 확인했으며, 세 타입 기존 회귀 37개를 재검사했다.
+
+이 테스트 SDK는 내부망과 동일한 SDK를 입수한 것이 아니라, 공개 obj/sort 계약이 없는 조건을 재현한 fixture다. 실제 내부망 SDK의 정확한 실패 원인은 아직 확인되지 않았다. 실제 내부망 확인이 필요한 호환 수정이며, 내부망 적용 시 이번 HTML 전체(또는 공통/영상/호출 블록과 MP4 제공자 속성)를 함께 교체한다. 삼성 원본 영상 URL과 인라인 로드·호출 순서는 유지했다.

@@ -1,0 +1,150 @@
+[
+  {
+    "name": "carousel initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel inline order",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel no separate scripts",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel setup ready",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel visible slides stay focusable",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel hidden slides inert",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel named carousel",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel current indicator",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel Korean indicator labels",
+    "status": "PASS"
+  },
+  {
+    "name": "video labels and controls",
+    "status": "PASS"
+  },
+  {
+    "name": "PC line",
+    "status": "PASS"
+  },
+  {
+    "name": "mobile dot",
+    "status": "PASS"
+  },
+  {
+    "name": "back to PC line",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "carousel stop",
+    "status": "PASS"
+  },
+  {
+    "name": "column initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "column inline order",
+    "status": "PASS"
+  },
+  {
+    "name": "column no separate scripts",
+    "status": "PASS"
+  },
+  {
+    "name": "column setup ready",
+    "status": "PASS"
+  },
+  {
+    "name": "column visible slides stay focusable",
+    "status": "PASS"
+  },
+  {
+    "name": "column hidden slides inert",
+    "status": "PASS"
+  },
+  {
+    "name": "column named carousel",
+    "status": "PASS"
+  },
+  {
+    "name": "column current indicator",
+    "status": "PASS"
+  },
+  {
+    "name": "column Korean indicator labels",
+    "status": "PASS"
+  },
+  {
+    "name": "column navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "column stop",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit inline order",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit no separate scripts",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit setup ready",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit visible slides stay focusable",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit hidden slides inert",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit named carousel",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit current indicator",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit Korean indicator labels",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit navigation",
+    "status": "PASS"
+  },
+  {
+    "name": "bentfit autoplay OFF",
+    "status": "PASS"
+  }
+]
