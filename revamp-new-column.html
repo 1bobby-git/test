@@ -382,6 +382,608 @@
             </div>
         </div>
     </section>
+
+    <!-- 동일 타입 section 2: 공통/영상/호출 스크립트는 페이지 하단에 한 번만 배치 -->
+    <section class="rvmp-cmpnt cmpnt-new-column pt-none bt-none"
+            id="exampleNewColumn-2"
+            data-width="1440"
+            data-background-color="#fff"
+            data-border-top="on"
+            data-border-bottom="on"
+            data-padding-top="normal"
+            data-padding-bottom="normal"
+            data-buffer-top="normal"
+            data-buffer-bottom="normal">
+        <div class="innr">
+            <!--
+                [BO / 기획서 매핑]
+
+                Headline Font Size
+                - data-font-size="normal"
+                - verylarge, large, normal(기본), small, verysmall
+
+                Headline Font Color
+                - data-font-color="#000"
+                - Hex Code 직접 입력
+
+                Description Font size
+                - data-font-size="normal"
+                - left, center(기본), right
+                - verylarge, large, normal(기본), small, verysmall
+
+                Description Font Color
+                - data-font-color="#000"
+                - Hex Code 직접 입력
+            -->
+            <div class="headline-area">
+                <div class="headline"
+                    data-font-size="normal"
+                    data-font-color="#000000">
+                    <h2 class="text" data-device="pc">함께하면 좋은 제품,<br>추가 할인 혜택 드려요</h2><!-- BO: Headline H Level -->
+                    <h2 class="text" data-device="mo">함께하면 좋은 제품,<br>추가 할인 혜택 드려요</h2><!-- BO: Headline H Level -->
+                </div>
+                <div class="description"
+                    data-font-size="normal"
+                    data-font-color="#000000">
+                    <p class="text" data-device="pc">회전식 건조기를 사용해야 하지만 너무 많은 에너지를 사용하고 싶지 않은가요?<br>Optimal Dry™ 스마트 기술은 습도 및 온도 센서를 사용하여 건조 시간을 조정합니다. 옷이 손상되지 않도록 보호하는 것 외에도,</p><!-- BO: Description (PC) -->
+                    <p class="text" data-device="mo">회전식 건조기를 사용해야 하지만 너무 많은 에너지를 사용하고 싶지 않은가요?<br>Optimal Dry™ 스마트 기술은 습도 및 온도 센서를 사용하여 건조 시간을 조정합니다. 옷이 손상되지 않도록 보호하는 것 외에도,</p><!-- BO: Description (MO) -->
+                </div>
+            </div>
+
+            <div class="list-area">
+                <div class="swiper-container">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">
+                            <div class="bundle__visual-area"
+                                data-text-align="left">
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Title
+                                    - .title-area p.title
+
+                                    Sub Title
+                                    - .sub-title-area p.title
+
+                                    Description
+                                    - .description-area p.desc
+                                -->
+                                <a href="" target="_self" class="link-area"><!-- BO: Image Link / BO: Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg" data-alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg"><!-- BO: Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg"><!-- BO: Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg" alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                        </picture>
+                                        <figcaption class="blind">테이블 앞에 있는 고양이 사진이 Galaxy AI의 포토 어시스트로 편집되고 있는 모습입니다. '생성' 버튼 위에는 '파티 모자 만들기'라는 문구가 표시되어 있습니다. 그 옆으로 파티 모자를 쓴 모습으로 편집된 고양이 사진이 표시된 갤럭시 S26 울트라가 있고 이전 이미지 보기, 다른 파일로 저장, 계속 편집 옵션이 함께 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">모든 Galaxy Watch, Buds<br> 또는 Ring에서 20% 할인</p><!-- BO: Title -->
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">포토 어시스트</p><!-- BO: Sub Title -->
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- BO: Description -->
+                                </div>
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Use CTA
+                                    - data-use-cta="on"
+                                    - on, off
+                                -->
+                                <div class="btn-area"
+                                    data-use-cta="on">
+                                    <!--
+                                        [BO / 기획서 매핑]
+
+                                        CTA Style
+                                        - class="btn btn-d"
+                                        - Round Encased
+
+                                        CTA Style
+                                        - class="btn-underline"
+                                        - Text Underline
+
+                                        CTA Button Color
+                                        - class="btn-type1"
+                                        - btn-type1(White) / btn-type2(black)
+
+                                        CTA Title
+                                        - title=""
+
+                                        CTA Link
+                                        - href=""
+
+                                        CTA Window Style
+                                        - target="_self"
+                                        - _self(현재창), _blank(새창)
+                                    -->
+                                    <a href="#" class="btn btn-d btn-type2" target="_blank" title="CTA Title">
+                                        <!-- BO: CTA Text -->
+                                        CTA Text
+                                    </a>
+                                </div>
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Disclaimer
+                                    - .description-area p.desc
+                                -->
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <!-- BO: Disclaimer -->
+                                    <p class="text">갤럭시 스마트폰과 태블릿의 포토 어시스트가 사진 편집을 간편하게 해줍니다. 피사체를 이동하거나 크기 조정 또는 삭제하면 AI가 빈 공간을 채워주면서 자연스러운 결과물을 만들죠. 또한, 프롬프트나 참고 이미지를 입력하면 피사체에 모자를 더하는 등 새로운 요소도 추가할 수 있습니다. 마음껏 상상력을 펼치고 창의력을 발휘해 차별화된 스타일을 시도해 보세요.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <!--
+                                [BO / 기획서 매핑]
+
+                                Visual Type
+                                - data-visual-type="image"
+
+                                Image (PC)
+                                - source media="(min-width: 800px)" srcset=""
+
+                                Image (MO)
+                                - source media="(max-width: 799px)" srcset=""
+
+                                Image Alt Text
+                                - picture data-alt=""
+                                - img alt=""
+
+                                Image Title
+                                - figcaption
+
+                                Image Link
+                                - a href=""
+
+                                Image Link Window Style
+                                - a target="_self"
+                                - 현재창(_self), 새창(_new)
+
+                            -->
+                            <div class="bundle__visual-area"
+                                data-text-align="center">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- BO: Image Link / BO: Image Link Window Style -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg" data-alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg"><!-- BO: Image (Desktop) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_mo.jpg"><!-- BO: Image (Mobile) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg" alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                        </picture>
+                                        <figcaption class="blind">고양이가 생일 파티 모자를 쓰고 있는 모습입니다. '생성' 버튼이 바로 아래에 있습니다. 크리에이티브 스튜디오로 생성된 3D 스타일 스티커들이 고양이를 둘러싸고 있습니다.</figcaption><!-- BO: Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">무한한 상상력을 담은 나만의 작품</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">크리에이티브 스튜디오</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="#" class="btn-underline" target="_blank" title="CTA Title">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <p class="text">크리에이티브 스튜디오에서 예술적인 감각을 발휘해 보세요. 텍스트와 그림 또는 이미지를 조합하여 인사말 카드, 배경화면 등을 마음대로 꾸밀 수 있죠. 귀여운 이모티콘처럼 원하는 스타일과 콘셉트의 스티커 세트를 만들어 친구들에게 뽐낼 수도 있습니다. 탐색하고 상상하고 공유하는 무궁무진한 가능성을 만나보세요.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="visual-area"
+                                data-text-align="right">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                        </picture>
+                                        <figcaption class="blind">고양이가 생일 파티 모자를 쓰고 있는 모습입니다. '생성' 버튼이 바로 아래에 있습니다. 크리에이티브 스튜디오로 생성된 3D 스타일 스티커들이 고양이를 둘러싸고 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">즐거운 순간을 소음 없이 더 선명하게</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">오디오 지우개</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="" class="btn btn-d btn-type2 ">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <p class="text">오디오 지우개는 몇 번의 탭만으로 동영상 속의 배경 소음을 제거하고 깨끗한 오디오 상태를 만들어 줍니다. 갤럭시 스마트폰과 갤럭시 탭에서 이 기능을 사용해 촬영한 일상 속 순간을 간단하게 편집하거나 특정 앱에서 공유된 영상의 방해 요소를 제거할 수 있습니다. 직접 간 콘서트 영상부터 다른 사람이 공유한 콘텐츠까지, 모든 순간을 선명하게 들을 수 있죠. 특히, 갤럭시 버즈와 함께라면 한층 더 생생한 사운드를 경험할 수 있습니다.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="bundle__visual-area"
+                                data-text-align="left">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                        </picture>
+                                        <figcaption class="blind">갤럭시 S26을 들고 있는 모습입니다. 자동 편집 기능을 이용해 영상을 편집하고 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">최고의 순간들만 모아서 편집</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">자동 잘라내기</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="" class="btn btn-d btn-type2 ">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area">
+                                    <p class="text">주말에 있었던 일들을 하이라이트 영상으로 간편하게 만들어 볼까요? 자동 잘라내기는 특정 활동을 중심으로 동영상에서 주요 순간들을 추출하여 즉시 하이라이트 클립으로 만들어주죠. 직접 편집하지 않아도 친구와 가족들에게 공유할 수 있는 근사한 영상을 간편하게 소장할 수 있습니다.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!--
+                        [BO / 기획서 매핑]
+
+                        Arrow Button Theme
+                        - data-arrow-theme="circle"
+                        - circle(기본), line
+                        - 구현안됨 (디자인없음)
+
+                        Arrow Button Show (PC)
+                        - data-arrow-pc="show"
+                        - show(기본), hide
+
+                        Arrow Button Show (MO)
+                        - data-arrow-mobile="hide"
+                        - show, hide(기본)
+                    -->
+                    <div class="ctrl-area" data-arrow-theme="circle" data-arrow-pc="show" data-arrow-mobile="hide">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+
+                    <!--
+                        [BO / 기획서 매핑]
+
+                        Indicator Color
+                        - data-indicator-color="white"
+                        - white(기본), black
+
+                        Indicator Show (PC)
+                        - data-indicator-show-pc="show"
+                        - show(기본), hide
+
+                        Indicator Show (MO)
+                        - data-indicator-show-mobile="show"
+                        - show(기본), hide
+                    -->
+                    <div class="page-area" data-indicator-color="white" data-indicator-theme-pc="dot" data-indicator-theme-mobile="dot" data-indicator-show-pc="show" data-indicator-show-mobile="show">
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 동일 타입 section 3: 공통/영상/호출 스크립트는 페이지 하단에 한 번만 배치 -->
+    <section class="rvmp-cmpnt cmpnt-new-column pt-none bt-none"
+            id="exampleNewColumn-3"
+            data-width="1440"
+            data-background-color="#fff"
+            data-border-top="on"
+            data-border-bottom="on"
+            data-padding-top="normal"
+            data-padding-bottom="normal"
+            data-buffer-top="normal"
+            data-buffer-bottom="normal">
+        <div class="innr">
+            <!--
+                [BO / 기획서 매핑]
+
+                Headline Font Size
+                - data-font-size="normal"
+                - verylarge, large, normal(기본), small, verysmall
+
+                Headline Font Color
+                - data-font-color="#000"
+                - Hex Code 직접 입력
+
+                Description Font size
+                - data-font-size="normal"
+                - left, center(기본), right
+                - verylarge, large, normal(기본), small, verysmall
+
+                Description Font Color
+                - data-font-color="#000"
+                - Hex Code 직접 입력
+            -->
+            <div class="headline-area">
+                <div class="headline"
+                    data-font-size="normal"
+                    data-font-color="#000000">
+                    <h2 class="text" data-device="pc">함께하면 좋은 제품,<br>추가 할인 혜택 드려요</h2><!-- BO: Headline H Level -->
+                    <h2 class="text" data-device="mo">함께하면 좋은 제품,<br>추가 할인 혜택 드려요</h2><!-- BO: Headline H Level -->
+                </div>
+                <div class="description"
+                    data-font-size="normal"
+                    data-font-color="#000000">
+                    <p class="text" data-device="pc">회전식 건조기를 사용해야 하지만 너무 많은 에너지를 사용하고 싶지 않은가요?<br>Optimal Dry™ 스마트 기술은 습도 및 온도 센서를 사용하여 건조 시간을 조정합니다. 옷이 손상되지 않도록 보호하는 것 외에도,</p><!-- BO: Description (PC) -->
+                    <p class="text" data-device="mo">회전식 건조기를 사용해야 하지만 너무 많은 에너지를 사용하고 싶지 않은가요?<br>Optimal Dry™ 스마트 기술은 습도 및 온도 센서를 사용하여 건조 시간을 조정합니다. 옷이 손상되지 않도록 보호하는 것 외에도,</p><!-- BO: Description (MO) -->
+                </div>
+            </div>
+
+            <div class="list-area">
+                <div class="swiper-container">
+                    <ul class="swiper-wrapper">
+                        <li class="swiper-slide">
+                            <div class="bundle__visual-area"
+                                data-text-align="left">
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Title
+                                    - .title-area p.title
+
+                                    Sub Title
+                                    - .sub-title-area p.title
+
+                                    Description
+                                    - .description-area p.desc
+                                -->
+                                <a href="" target="_self" class="link-area"><!-- BO: Image Link / BO: Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg" data-alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg"><!-- BO: Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg"><!-- BO: Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_01_photo_assist_pc.jpg" alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                        </picture>
+                                        <figcaption class="blind">테이블 앞에 있는 고양이 사진이 Galaxy AI의 포토 어시스트로 편집되고 있는 모습입니다. '생성' 버튼 위에는 '파티 모자 만들기'라는 문구가 표시되어 있습니다. 그 옆으로 파티 모자를 쓴 모습으로 편집된 고양이 사진이 표시된 갤럭시 S26 울트라가 있고 이전 이미지 보기, 다른 파일로 저장, 계속 편집 옵션이 함께 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">모든 Galaxy Watch, Buds<br> 또는 Ring에서 20% 할인</p><!-- BO: Title -->
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">포토 어시스트</p><!-- BO: Sub Title -->
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- BO: Description -->
+                                </div>
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Use CTA
+                                    - data-use-cta="on"
+                                    - on, off
+                                -->
+                                <div class="btn-area"
+                                    data-use-cta="on">
+                                    <!--
+                                        [BO / 기획서 매핑]
+
+                                        CTA Style
+                                        - class="btn btn-d"
+                                        - Round Encased
+
+                                        CTA Style
+                                        - class="btn-underline"
+                                        - Text Underline
+
+                                        CTA Button Color
+                                        - class="btn-type1"
+                                        - btn-type1(White) / btn-type2(black)
+
+                                        CTA Title
+                                        - title=""
+
+                                        CTA Link
+                                        - href=""
+
+                                        CTA Window Style
+                                        - target="_self"
+                                        - _self(현재창), _blank(새창)
+                                    -->
+                                    <a href="#" class="btn btn-d btn-type2" target="_blank" title="CTA Title">
+                                        <!-- BO: CTA Text -->
+                                        CTA Text
+                                    </a>
+                                </div>
+                                <!--
+                                    [BO / 기획서 매핑]
+
+                                    Disclaimer
+                                    - .description-area p.desc
+                                -->
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <!-- BO: Disclaimer -->
+                                    <p class="text">갤럭시 스마트폰과 태블릿의 포토 어시스트가 사진 편집을 간편하게 해줍니다. 피사체를 이동하거나 크기 조정 또는 삭제하면 AI가 빈 공간을 채워주면서 자연스러운 결과물을 만들죠. 또한, 프롬프트나 참고 이미지를 입력하면 피사체에 모자를 더하는 등 새로운 요소도 추가할 수 있습니다. 마음껏 상상력을 펼치고 창의력을 발휘해 차별화된 스타일을 시도해 보세요.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <!--
+                                [BO / 기획서 매핑]
+
+                                Visual Type
+                                - data-visual-type="image"
+
+                                Image (PC)
+                                - source media="(min-width: 800px)" srcset=""
+
+                                Image (MO)
+                                - source media="(max-width: 799px)" srcset=""
+
+                                Image Alt Text
+                                - picture data-alt=""
+                                - img alt=""
+
+                                Image Title
+                                - figcaption
+
+                                Image Link
+                                - a href=""
+
+                                Image Link Window Style
+                                - a target="_self"
+                                - 현재창(_self), 새창(_new)
+
+                            -->
+                            <div class="bundle__visual-area"
+                                data-text-align="center">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- BO: Image Link / BO: Image Link Window Style -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg" data-alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg"><!-- BO: Image (Desktop) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_mo.jpg"><!-- BO: Image (Mobile) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_02_creative_studio_pc.jpg" alt="Image Alt Text"><!-- BO: Image Alt Text -->
+                                        </picture>
+                                        <figcaption class="blind">고양이가 생일 파티 모자를 쓰고 있는 모습입니다. '생성' 버튼이 바로 아래에 있습니다. 크리에이티브 스튜디오로 생성된 3D 스타일 스티커들이 고양이를 둘러싸고 있습니다.</figcaption><!-- BO: Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">무한한 상상력을 담은 나만의 작품</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">크리에이티브 스튜디오</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="#" class="btn-underline" target="_blank" title="CTA Title">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <p class="text">크리에이티브 스튜디오에서 예술적인 감각을 발휘해 보세요. 텍스트와 그림 또는 이미지를 조합하여 인사말 카드, 배경화면 등을 마음대로 꾸밀 수 있죠. 귀여운 이모티콘처럼 원하는 스타일과 콘셉트의 스티커 세트를 만들어 친구들에게 뽐낼 수도 있습니다. 탐색하고 상상하고 공유하는 무궁무진한 가능성을 만나보세요.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="visual-area"
+                                data-text-align="right">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                        </picture>
+                                        <figcaption class="blind">고양이가 생일 파티 모자를 쓰고 있는 모습입니다. '생성' 버튼이 바로 아래에 있습니다. 크리에이티브 스튜디오로 생성된 3D 스타일 스티커들이 고양이를 둘러싸고 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">즐거운 순간을 소음 없이 더 선명하게</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">오디오 지우개</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="" class="btn btn-d btn-type2 ">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area" data-font-color="#000000">
+                                    <p class="text">오디오 지우개는 몇 번의 탭만으로 동영상 속의 배경 소음을 제거하고 깨끗한 오디오 상태를 만들어 줍니다. 갤럭시 스마트폰과 갤럭시 탭에서 이 기능을 사용해 촬영한 일상 속 순간을 간단하게 편집하거나 특정 앱에서 공유된 영상의 방해 요소를 제거할 수 있습니다. 직접 간 콘서트 영상부터 다른 사람이 공유한 콘텐츠까지, 모든 순간을 선명하게 들을 수 있죠. 특히, 갤럭시 버즈와 함께라면 한층 더 생생한 사운드를 경험할 수 있습니다.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                        <li class="swiper-slide">
+                            <div class="bundle__visual-area"
+                                data-text-align="left">
+                                <!-- Visual Type : Image(D) -->
+                                <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
+                                    <figure class="prd-figure">
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                            <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (PC) -->
+                                            <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (MO) -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
+                                        </picture>
+                                        <figcaption class="blind">갤럭시 S26을 들고 있는 모습입니다. 자동 편집 기능을 이용해 영상을 편집하고 있습니다.</figcaption><!-- Image Title -->
+                                    </figure>
+                                </a>
+                                <div class="title-area">
+                                    <p class="text">최고의 순간들만 모아서 편집</p>
+                                </div>
+                                <div class="sub-title-area">
+                                    <p class="text">자동 잘라내기</p>
+                                </div>
+                                <div class="description-area">
+                                    <p class="text">Description</p><!-- Description (MO) -->
+                                </div>
+                                <div class="btn-area">
+                                    <a href="" class="btn btn-d btn-type2 ">CTA Text</a>
+                                </div>
+                                <div class="disclaimer-area">
+                                    <p class="text">주말에 있었던 일들을 하이라이트 영상으로 간편하게 만들어 볼까요? 자동 잘라내기는 특정 활동을 중심으로 동영상에서 주요 순간들을 추출하여 즉시 하이라이트 클립으로 만들어주죠. 직접 편집하지 않아도 친구와 가족들에게 공유할 수 있는 근사한 영상을 간편하게 소장할 수 있습니다.</p><!-- Disclaimer (MO) -->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!--
+                        [BO / 기획서 매핑]
+
+                        Arrow Button Theme
+                        - data-arrow-theme="circle"
+                        - circle(기본), line
+                        - 구현안됨 (디자인없음)
+
+                        Arrow Button Show (PC)
+                        - data-arrow-pc="show"
+                        - show(기본), hide
+
+                        Arrow Button Show (MO)
+                        - data-arrow-mobile="hide"
+                        - show, hide(기본)
+                    -->
+                    <div class="ctrl-area" data-arrow-theme="circle" data-arrow-pc="show" data-arrow-mobile="hide">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+
+                    <!--
+                        [BO / 기획서 매핑]
+
+                        Indicator Color
+                        - data-indicator-color="white"
+                        - white(기본), black
+
+                        Indicator Show (PC)
+                        - data-indicator-show-pc="show"
+                        - show(기본), hide
+
+                        Indicator Show (MO)
+                        - data-indicator-show-mobile="show"
+                        - show(기본), hide
+                    -->
+                    <div class="page-area" data-indicator-color="white" data-indicator-theme-pc="dot" data-indicator-theme-mobile="dot" data-indicator-show-pc="show" data-indicator-show-mobile="show">
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!--
             New Column Swiper Script
             ----
