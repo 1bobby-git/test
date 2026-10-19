@@ -1,0 +1,9 @@
+{
+  "environment": "private-registry SDK fixture; not the actual internal SDK",
+  "paused": false,
+  "currentTime": 13.180554,
+  "readyState": 4,
+  "button": "kvVideoBtn play",
+  "label": "동영상 일시정지",
+  "circleClick": "did not stop playback or change icon"
+}

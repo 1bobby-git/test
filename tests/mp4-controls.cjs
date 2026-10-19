@@ -36,9 +36,15 @@ function fixture(auto = true, sort = 'video', delayed = false) {
   const win={NewCarouselSetup:{},kvVideoPlayer:api,setTimeout,clearTimeout:k=>timers.delete(k),console:{info(){},warn(){},error(){}}}; win.window=win;
   vm.runInNewContext(source,{window:win,document:doc,Element:Node,setTimeout,clearTimeout:win.clearTimeout}); win.NewCarouselSetup.video();
   function click(){let prevented=false; const e={target:button,defaultPrevented:false,preventDefault(){prevented=true;},stopImmediatePropagation(){}}; (listeners.click||[]).forEach(fn=>fn(e)); return prevented;}
-  return {win,api,item,target,button,slide,visual,container,click,tick,calls,setTimeout};
+  return {win,api,item,target,box,button,slide,visual,container,click,tick,calls,setTimeout};
 }
 const tests={
+  'MP4 blocked autoplay preserves native play Promise contract'(){const f=fixture();f.win.Promise=Promise;f.click();const result=f.target.play();assert.equal(typeof result?.then,'function');assert.equal(f.target.paused,true);},
+  'MP4 rejected play restores intent and retries with one click'(){const f=fixture();f.click();const guarded=f.target.play;f.target.play=()=>({catch(reject){reject(new Error('source temporarily unavailable'));}});f.click();assert.equal(f.visual.__ncManualRequest.playing,false);assert.equal(f.button.classList.contains('pause'),true);f.target.play=guarded;f.click();assert.equal(f.target.paused,false);},
+  'Unmarked native MP4 stop also works without SDK registry'(){const f=fixture();f.win.kvVideoPlayer=undefined;assert.equal(f.click(),true);assert.equal(f.target.paused,true);},
+  'MP4 native stop does not require public SDK registry'(){const f=fixture();f.box.attrs['data-video-provider']='mp4';f.win.kvVideoPlayer=undefined;assert.equal(f.click(),true);assert.equal(f.target.paused,true);assert.equal(f.button.classList.contains('pause'),true);},
+  'MP4 native stop accepts a different SDK type name'(){const f=fixture(true,'mp4');f.box.attrs['data-video-provider']='mp4';assert.equal(f.click(),true);assert.equal(f.target.paused,true);},
+  'MP4 native stop survives a throwing internal SDK stop'(){const f=fixture();f.box.attrs['data-video-provider']='mp4';f.api.videoStop=()=>{throw new Error('internal SDK contract differs');};f.click();assert.equal(f.target.paused,true);assert.equal(f.button.classList.contains('pause'),true);},
   'MP4 playing with stale pause icon still stops'(){const f=fixture();f.button.classList.remove('play');f.button.classList.add('pause');f.click();assert.equal(f.target.paused,true);assert.equal(f.visual.__ncManualRequest.playing,false);},
   'MP4 stopped after resize icon reset resumes on next click'(){const f=fixture();f.click();f.button.classList.add('play');f.click();assert.equal(f.target.paused,false);},
   'MP4 AutoON playing click stops and shows preview'(){const f=fixture();assert.equal(f.click(),true);assert.equal(f.target.paused,true);assert.equal(f.target.currentTime,0);assert.equal(f.button.classList.contains('pause'),true);assert.ok(f.calls.includes('show'));assert.equal(f.item.auto,true);},
