@@ -4,9 +4,13 @@
 
 ## 로드 및 호출 순서
 
-각 HTML 내부의 `newCarouselCommonScript` → `newCarouselVideoScript` → `newCarouselInitScript` 순서를 유지한다. 별도 common.js/video.js 및 preview-media-compat 파일은 필요 없다. 호출 블록은 DOMContentLoaded 콜백을 등록한 뒤 `NewCarouselSetup.common()`과 `.video()`를 설치한다. 콜백 안에서는 영상 생성 → `initComponentSwiper()` → `refreshComponentSwiper()`를 실행한다. async 로드는 사용하지 않는다.
+각 HTML 내부의 `newCarouselCommonScript` → `newCarouselVideoScript` → `newCarouselInitScript` 순서를 유지한다. 공통·영상 블록은 페이지당 한 번씩 배치하고, 호출 블록은 `NewCarouselSetup.init()`을 실행한다. 별도 common.js/video.js는 필요 없다. async 로드는 사용하지 않는다.
 
-한 페이지에 여러 컴포넌트를 배치할 때 공통·영상 블록은 한 번씩 포함하고 section/영상 id는 고유하게 출력한다. Ajax 갱신 뒤 `refreshComponentSwiper('#컴포넌트ID')`를 호출한다. Setup 객체는 중복 설치 방지 상태를 보존하므로 삭제하지 않는다.
+`init()`은 DOM 준비 후 세 타입 section을 모두 찾아 각 section 안에서 영상 생성 → `initComponentSwiper()` → `refreshComponentSwiper()` 순서로 실행한다. 같은 타입 여러 개와 세 타입 혼합을 지원한다. 추가 section은 DOM 감지로 자동 초기화되며, 명시적으로 `NewCarouselSetup.init(추가한DOM)`을 호출해도 된다. 반복 호출은 기존 인스턴스·수동 정지 상태를 유지한다. 기존 slide 내용 교체 뒤에는 `refreshComponentSwiper(sectionDOM 또는 '#고유ID')`를 호출한다.
+
+BO에서 section/영상 ID를 페이지 전체에 고유하게 출력하는 것이 원칙이다. 단순 복사로 ID가 겹치거나 section ID가 없으면 자동으로 고유 ID를 만들고 section 내부 접근성 ID 참조도 연결한다. 네비게이션·페이지네이션은 해당 section의 DOM 요소만 사용한다.
+
+각 `.kvVideo`에 `data-video-src-pc`, `data-video-src-mobile`, `data-video-type` (`video | youtube | bc`), `data-video-autoplay`, `data-video-loop` (`true | false`)를 출력한다. MP4는 기존 `data-video-provider="mp4"`도 유지한다. 소스와 Auto/Loop 값은 기존 호출 인자와 같다. 생성 상태는 SDK가 교체하는 target 대신 부모 `.kvVideo`에 보관한다. SDK 생성 예외는 콘솔 경고로 남기며 자동 DOM 감지로 무한 재시도하지 않는다. Setup 객체는 중복 설치 방지 상태를 보존하므로 삭제하지 않는다.
 
 ## BO indicator 및 자동재생
 

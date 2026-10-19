@@ -1,0 +1,69 @@
+[
+  {
+    "name": "six sections initialized",
+    "status": "PASS",
+    "detail": 6
+  },
+  {
+    "name": "unique IDs",
+    "status": "PASS"
+  },
+  {
+    "name": "video targets created once",
+    "status": "PASS",
+    "detail": 12
+  },
+  {
+    "name": "provider and Auto Loop settings preserved",
+    "status": "PASS"
+  },
+  {
+    "name": "SDK target replacement keeps creation state",
+    "status": "PASS"
+  },
+  {
+    "name": "navigation isolated",
+    "status": "PASS",
+    "detail": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "name": "pagination owned by section",
+    "status": "PASS"
+  },
+  {
+    "name": "support state isolated",
+    "status": "PASS"
+  },
+  {
+    "name": "per-type autoplay policy",
+    "status": "PASS"
+  },
+  {
+    "name": "repeat init reuses instances",
+    "status": "PASS"
+  },
+  {
+    "name": "late section automatically initialized",
+    "status": "PASS"
+  },
+  {
+    "name": "late video IDs isolated",
+    "status": "PASS",
+    "detail": 18
+  },
+  {
+    "name": "late insertion keeps original instances",
+    "status": "PASS"
+  },
+  {
+    "name": "manual stops survive multi-section resize",
+    "status": "PASS"
+  }
+]

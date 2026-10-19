@@ -306,7 +306,8 @@
             data-indicator-theme/type는 공통 JS가 생성하는 현재 기기의 결과값이다.
          4. BO 자동 슬라이드: initComponentSwiper 옵션 autoplay:false 또는 {delay:3000,...}.
             autoplay와 개별 영상의 Auto/Loop는 별개다. 기존 페이지별 옵션을 유지한다.
-         5. Ajax 갱신 후 refreshComponentSwiper('#컴포넌트ID') 호출. init 재호출은 중복 생성하지 않는다.
+         5. 여러 section은 NewCarouselSetup.init()으로 자동 초기화. Ajax section 추가도 자동 감지한다.
+            기존 slide 교체는 refreshComponentSwiper(sectionDOM) 호출. init 재호출은 중복 생성하지 않는다.
          6. 영상 공간은 공통 CSS와 공통 스크립트가 확보한다. 별도 검토용 보정 파일은 필요 없다.
          7. MP4의 .kvVideo에 data-video-provider="mp4"를 출력한다. 내부망 SDK 객체 형식과 별개로 native video를 제어한다.
          8. 접근성: 영상 버튼의 재생/일시정지 문구는 스크립트가 동기화한다.
@@ -316,7 +317,7 @@
     <script id="newCarouselCommonScript">
 /* 세 타입 공통. 로드만으로 설치 확장을 실행하지 않는다.
  * 순서: common.js → video.js → 페이지 호출 스크립트.
- * 각 페이지는 DOMContentLoaded 콜백 등록 후 NewCarouselSetup.common()/video() 호출.
+ * 호출 블록의 NewCarouselSetup.init()이 설치와 DOM 준비 후 section별 호출을 담당한다.
  * 파일은 페이지당 한 번 로드. 중복 로드는 아래 가드로 무시한다. */
 (function () {
     'use strict';
@@ -858,11 +859,11 @@
                 nextSlideMessage: '다음 슬라이드'
             },
             navigation: {
-                prevEl: state.selector + ' .swiper-button-prev',
-                nextEl: state.selector + ' .swiper-button-next'
+                prevEl: state.root.querySelector('.swiper-button-prev'),
+                nextEl: state.root.querySelector('.swiper-button-next')
             },
             pagination: {
-                el: state.selector + ' .swiper-pagination',
+                el: state.root.querySelector('.swiper-pagination'),
                 type: 'bullets',
                 clickable: true,
                 renderBullet: function (index, className) {
@@ -937,7 +938,7 @@
         };
 
         swiperMap[selector] = state;
-        state.swiper = new Swiper(selector + ' .swiper-container', createSwiperOptions(state));
+        state.swiper = new Swiper(root.querySelector('.swiper-container'), createSwiperOptions(state));
         state.swiper.on('destroy', function () {
             var el = state.swiper.el;
             if (el && el.__componentRefreshFrame) cancelAnimationFrame(el.__componentRefreshFrame);
@@ -2218,6 +2219,172 @@ Object.assign(window.NewCarouselSetup, {
 
     }
 });
+
+
+// 여러 section의 호출 진입점. 공통/영상 블록 뒤에서 init()을 한 번 호출한다.
+(function (win, doc) {
+    'use strict';
+    var selector = 'section.rvmp-cmpnt.cmpnt-new-carousel, section.rvmp-cmpnt.cmpnt-new-column, section.rvmp-cmpnt.cmpnt-new-benefit-card';
+    var serial = 0, observer, waiting = false;
+    var presets = {
+        'cmpnt-new-carousel': {
+                autoHeight: true,
+                slidesPerView: 1,
+                slidesPerGroup: 1,
+                spaceBetween: 0,
+                equalHeight: false,
+                autoplayText: true,
+                bulletLabel: '번 슬라이드로 이동'
+            },
+        'cmpnt-new-column': {
+                autoHeight: true,
+                slidesPerView: 2,
+                slidesPerGroup: 2,
+                spaceBetween: 24,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 1.15,
+                        slidesPerGroup: 1,
+                        spaceBetween: 12,
+                        centeredSlides: true,
+                    },
+                    800: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                        spaceBetween: 24,
+                        centeredSlides: false,
+                    },
+                    801: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                        spaceBetween: 24,
+                        centeredSlides: false,
+                    }
+                },
+                equalHeight: false,
+                autoplayText: true,
+                bulletLabel: '번 슬라이드로 이동'
+            },
+        'cmpnt-new-benefit-card': {
+                autoHeight: true,
+                slidesPerView: 3,
+                slidesPerGroup: 3,
+                spaceBetween: 24,
+                breakpoints: {
+                    320: {
+                        slidesPerView: 1.15,
+                        slidesPerGroup: 1,
+                        spaceBetween: 12,
+                        centeredSlides: true,
+                    },
+                    800: {
+                        slidesPerView: 3,
+                        slidesPerGroup: 3,
+                        spaceBetween: 24,
+                        centeredSlides: false,
+                    }
+                },
+                equalHeight: false,
+                autoplay: false,
+                autoplayText: true,
+                bulletLabel: '번 슬라이드로 이동'
+            }
+    };
+    function identity(node, prefix) {
+        var old = node.id;
+        if (old && /^[A-Za-z_][\w-]*$/.test(old) && doc.getElementById(old) === node) return old;
+        var id;
+        do { id = prefix + '-' + (++serial); } while (doc.getElementById(id));
+        node.id = id;
+        return id;
+    }
+    function identities(root) {
+        var changes = Object.create(null), nodes = [root].concat(Array.prototype.slice.call(root.querySelectorAll('[id]')));
+        nodes.forEach(function (node) {
+            var old = node.id, next = identity(node, node === root ? 'new-component' : 'new-component-node');
+            if (old && old !== next) changes[old] = next;
+        });
+        // 같은 section 내부의 접근성 참조도 복사된 새 ID에 연결한다.
+        [root].concat(Array.prototype.slice.call(root.querySelectorAll('[aria-labelledby], [aria-describedby], [aria-controls], [aria-owns], [for], a[href^="#"]'))).forEach(function (node) {
+            ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns', 'for'].forEach(function (name) {
+                var value = node.getAttribute(name);
+                if (value) node.setAttribute(name, value.split(/\s+/).map(function (id) { return changes[id] || id; }).join(' '));
+            });
+            var href = node.getAttribute('href');
+            if (href && changes[href.slice(1)]) node.setAttribute('href', '#' + changes[href.slice(1)]);
+        });
+    }
+    function videos(root) {
+        if (!win.kvVideoPlayer || typeof win.kvVideoPlayer.create !== 'function') return;
+        var boxes = root.querySelectorAll('.kvVideo[data-video-src-pc]');
+        for (var i = 0; i < boxes.length; i += 1) {
+            var box = boxes[i], target = box.querySelector('.target');
+            if (!target || box.__ncVideoCreated) continue;
+            identity(target, 'new-component-video');
+            // BO: 각 영상의 PC/MO 소스·provider·Auto·Loop. 슬라이드 autoplay와는 별개다.
+            // SDK가 target을 video/iframe으로 교체해도 유지되는 부모에 생성 상태를 기록한다.
+            box.__ncVideoCreated = true;
+            try { win.kvVideoPlayer.create(box.getAttribute('data-video-src-pc'), box.getAttribute('data-video-src-mobile') || '', target.id,
+                box.getAttribute('data-video-type') || 'video', box.getAttribute('data-video-autoplay') === 'true', box.getAttribute('data-video-loop') === 'true');
+            } catch (error) {
+                box.__ncVideoCreated = 'failed'; // 자동 DOM 감지가 SDK 예외를 무한 재시도하지 않도록 유지
+                if (win.console && win.console.warn) win.console.warn('컴포넌트 영상 초기화 실패', target.id, error);
+            }
+        }
+    }
+    function mount(root) {
+        if (!root.isConnected || !root.querySelector('.swiper-container') || typeof win.Swiper === 'undefined') return;
+        if (!root.__ncSectionIdentity) { identities(root); root.__ncSectionIdentity = true; }
+        videos(root);
+        if (root.__ncSectionSwiper && !root.__ncSectionSwiper.destroyed) return;
+        var options;
+        Object.keys(presets).some(function (name) {
+            if (!root.classList.contains(name)) return false;
+            options = presets[name]; return true;
+        });
+        if (!options) return;
+        var instance = win.initComponentSwiper(root, options);
+        if (instance) {
+            root.__ncSectionSwiper = instance;
+            win.refreshComponentSwiper(root);
+        }
+    }
+    function scan(scope) {
+        if (!scope || !scope.querySelectorAll) return;
+        if (scope.nodeType === 1 && scope.matches(selector)) mount(scope);
+        var roots = scope.querySelectorAll(selector);
+        for (var i = 0; i < roots.length; i += 1) mount(roots[i]);
+    }
+    function init(scope) {
+        win.NewCarouselSetup.common();
+        win.NewCarouselSetup.video();
+        if (doc.readyState === 'loading') {
+            if (!waiting) {
+                waiting = true;
+                doc.addEventListener('DOMContentLoaded', function () { waiting = false; init(); }, false);
+            }
+            return;
+        }
+        scan(scope || doc);
+        // Ajax 등으로 section 또는 내부 콘텐츠가 추가돼도 동일한 호출 경로를 사용한다.
+        if (!observer && win.MutationObserver && doc.body) {
+            observer = new win.MutationObserver(function (records) {
+                records.forEach(function (record) {
+                    for (var i = 0; i < record.addedNodes.length; i += 1) {
+                        var node = record.addedNodes[i];
+                        if (node.nodeType !== 1) continue;
+                        scan(node);
+                        var root = node.closest(selector);
+                        if (root && root !== node) mount(root);
+                    }
+                });
+            });
+            observer.observe(doc.body, { childList: true, subtree: true });
+        }
+    }
+    win.NewCarouselSetup.init = init;
+    win.addEventListener('load', function () { if (waiting || observer) init(); }, false);
+})(window, document);
 
 }());
 </script>
@@ -3612,55 +3779,13 @@ window.NewCarouselSetup.video = function () {
 </script>
 
     <script id="newCarouselInitScript">
-        // 아래처럼 호출
-        document.addEventListener('DOMContentLoaded', function () {
-            window.initComponentSwiper('#exampleNewBenefitCard', {
-                autoHeight: true,
-                slidesPerView: 3,
-                slidesPerGroup: 3,
-                spaceBetween: 24,
-                breakpoints: {
-                    320: {
-                        slidesPerView: 1.15,
-                        slidesPerGroup: 1,
-                        spaceBetween: 12,
-                        centeredSlides: true,
-                    },
-                    800: {
-                        slidesPerView: 3,
-                        slidesPerGroup: 3,
-                        spaceBetween: 24,
-                        centeredSlides: false,
-                    }
-                },
-                equalHeight: false,
-                autoplay: false,
-                autoplayText: true,
-                bulletLabel: '번 슬라이드로 이동'
-            });
-            if (window.refreshComponentSwiper) {
-                window.refreshComponentSwiper('#exampleNewBenefitCard');
-            }
-        }, false);
-                /* 개발 연동 예시: 실제 BO API URL로 교체 후 사용.
-
-
-        $.ajax({
-            url: '/sample/column',
-            type: 'GET',
-            success: function (html) {
-                // $('#exampleNewBenefitCard .swiper-wrapper').html(html);
-
-                if (window.refreshComponentSwiper) {
-                    window.refreshComponentSwiper('#exampleNewBenefitCard');
-                }
-            }
-        });
-                */
-
-        // 초기화 콜백을 등록한 다음 공통 확장을 설치한다.
-        window.NewCarouselSetup.common();
-        window.NewCarouselSetup.video();
+        // 개발 전달: 공통 블록 → 영상 블록 → 이 호출 블록을 페이지당 한 번 배치한다.
+        // 같은 타입/다른 타입 section을 여러 개 출력해도 모두 개별 초기화한다.
+        // BO는 고유 ID를 출력하는 것이 원칙이며, 단순 복사로 겹친 ID는 자동 보정한다.
+        // 영상 설정은 각 .kvVideo의 data-video-* 속성에 작성한다.
+        // Ajax section 추가는 자동 감지. 명시적 재검색: NewCarouselSetup.init(추가한DOM).
+        // 기존 slide 콘텐츠 교체: refreshComponentSwiper(sectionDOM 또는 '#고유ID').
+        window.NewCarouselSetup.init();
     </script>
     <div style="height: 20vh;background:#efefef;">
     </div>
