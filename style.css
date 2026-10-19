@@ -202,7 +202,13 @@
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvBox .kvCta {display:flex;align-items:center;gap:0 24px;margin-top:40px}
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvBox .kvCta .link {font-size:14px;font-weight:700;line-height:24px;border-bottom:1px solid#000}
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvBox .kvCta .cta {display:flex;align-items:center;justify-content:center;height:40px;padding:0 24px;color:#fff;font-size:14px;font-weight:700;line-height:18px;border-radius:20px;background:#000}
-.rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvVideo {width:100%;height:100%}
+/* SDK/썸네일이 늦게 로드되어도 외곽을 먼저 확보한다. 실제 비율은 공통 스크립트가 갱신한다.
+ * fullscreen의 위치/크기는 해당 플레이어가 제어한다. */
+.rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .bundle-area > .visual-area:has(.kvVideo) {width:100%;min-width:0;max-width:100%;aspect-ratio:16 / 9;}
+.rvmp-cmpnt[class*="cmpnt-new-"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvItem .kvVideo {position:absolute;inset:0;width:100%;height:100%;}
+.rvmp-cmpnt[class*="cmpnt-new-"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo > .target,
+.rvmp-cmpnt[class*="cmpnt-new-"]:not(:fullscreen):not(:has(:fullscreen, .vjs-fullscreen)) .kvVideo .vjs-tech {position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:none;padding:0;aspect-ratio:auto;}
+.rvmp-cmpnt[class*="cmpnt-new-"] .kvVideo .previewImg picture {display:block;width:100%;height:100%;}
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvVideo video {width:100%;height:100%;object-fit:cover}
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvVideo .video-js {width:100%;height:100%}
 .rvmp-cmpnt[class*="cmpnt-new-"] .kvItem .kvVideo .previewBox {position:absolute;top:0;left:0;width:100%;height:100%}
@@ -400,3 +406,6 @@
     .rvmp-cmpnt.cmpnt-new-column .list-area {padding-left:0;padding-right:0;}
     .rvmp-cmpnt.cmpnt-new-benefit-card .disclaimer-area {padding-left:24px;padding-right:24px;}
 }
+
+/* 색상/레이아웃은 유지하고 키보드 초점은 명확히 표시한다. */
+.rvmp-cmpnt[class*="cmpnt-new-"] :is(a, button, input, select, textarea, [tabindex]):focus-visible {outline:2px solid currentColor !important;outline-offset:3px !important;}

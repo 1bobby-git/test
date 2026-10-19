@@ -47,7 +47,7 @@
     <script src="/sec/static/_script/base.js"></script>
     <!-- New Component JS -->
     <script src="/sec/static/_script/newComponent.js"></script>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css?v=20261019-1">
 </head>
 
 <body>
@@ -83,7 +83,7 @@
         - data-text-align="center"
         - left, center(기본), right
     -->
-    <section data-preview-media-compat="on" class="rvmp-cmpnt cmpnt-new-column pt-none bt-none"
+    <section class="rvmp-cmpnt cmpnt-new-column pt-none bt-none"
             id="exampleNewColumn" 
             data-width="1440" 
             data-background-color="#fff" 
@@ -281,10 +281,10 @@
                                 <!-- Visual Type : Image(D) -->
                                 <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
                                     <figure class="prd-figure">
-                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" data-alt="Image Alt Text"><!-- Image Alt Text -->
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
                                             <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (PC) -->
                                             <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg"><!-- Image (MO) -->
-                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" alt="Image Alt Text"><!-- Image Alt Text -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_03_audio_eraser_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
                                         </picture>
                                         <figcaption class="blind">고양이가 생일 파티 모자를 쓰고 있는 모습입니다. '생성' 버튼이 바로 아래에 있습니다. 크리에이티브 스튜디오로 생성된 3D 스타일 스티커들이 고양이를 둘러싸고 있습니다.</figcaption><!-- Image Title -->
                                     </figure>
@@ -312,10 +312,10 @@
                                 <!-- Visual Type : Image(D) -->
                                 <a href="" target="_self"><!-- Image Link / Image Link Window Style : 현재창(target="_self"), 새창(target="_new") -->
                                     <figure class="prd-figure">
-                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" data-alt="Image Alt Text"><!-- Image Alt Text -->
+                                        <picture data-default-src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" data-alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
                                             <source media="(min-width: 800px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (PC) -->
                                             <source media="(max-width: 799px)" srcset="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg"><!-- Image (MO) -->
-                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" alt="Image Alt Text"><!-- Image Alt Text -->
+                                            <img src="//images.samsung.com/kdp/static/pcd/galaxy-ai/2026/02_creativity_04_auto_trim_pc.jpg" alt="Image Alt Text"><!-- BO: 이미지의 의미를 전달하는 실제 대체 텍스트 입력. 장식용은 alt=""; 이미지 링크에는 목적지 이름 필수. -->
                                         </picture>
                                         <figcaption class="blind">갤럭시 S26을 들고 있는 모습입니다. 자동 편집 기능을 이용해 영상을 편집하고 있습니다.</figcaption><!-- Image Title -->
                                     </figure>
@@ -405,8 +405,10 @@
          4. BO 자동 슬라이드: initComponentSwiper 옵션 autoplay:false 또는 {delay:3000,...}.
             autoplay와 개별 영상의 Auto/Loop는 별개다. 기존 페이지별 옵션을 유지한다.
          5. Ajax 갱신 후 refreshComponentSwiper('#컴포넌트ID') 호출. init 재호출은 중복 생성하지 않는다.
-         6. 검토용 영상 보정은 preview-media-compat.js/css 두 파일로 분리했다.
-            운영 통합 시 이 두 파일 및 data-preview-media-compat 속성은 제외하고 내부망 플레이어로 검증한다.
+         6. 영상 공간은 공통 CSS와 공통 스크립트가 확보한다. 별도 검토용 보정 파일은 필요 없다.
+         7. 접근성: 영상 버튼의 재생/일시정지 문구는 스크립트가 동기화한다.
+            BO는 콘텐츠에 맞는 이미지 대체 텍스트/링크 목적지 이름을 입력한다.
+            음성 정보가 있는 영상은 자막·대본을 제공하고 영상 위 텍스트/버튼 대비를 검수한다.
     -->
     <script id="newCarouselCommonScript">
 /* 세 타입 공통. 로드만으로 설치 확장을 실행하지 않는다.
@@ -1166,7 +1168,7 @@ Object.assign(window.NewCarouselSetup, {
             var layoutPass = 0;
             var heightProperties = ['height', 'block-size', 'min-height', 'min-block-size', 'max-height', 'max-block-size'];
             var youtubeParser = doc.createElement('a');
-            var mediaEvents = ['load', 'loadedmetadata', 'loadeddata', 'emptied', 'resize', 'fullscreenchange', 'webkitfullscreenchange'];
+            var mediaEvents = ['play', 'pause', 'ended', 'load', 'loadedmetadata', 'loadeddata', 'emptied', 'resize', 'fullscreenchange', 'webkitfullscreenchange'];
             var events = ['slideChange', 'transitionEnd', 'resize', 'breakpoint', 'observerUpdate', 'imagesReady', 'update', 'paginationRender', 'paginationUpdate', 'autoplayStart', 'autoplayStop', 'autoplayPause', 'autoplayResume'];
             var raf = win.requestAnimationFrame || function (fn) { return win.setTimeout(fn, 16); };
             function attr(node, name, value) { if (node.getAttribute(name) !== value) node.setAttribute(name, value); }
@@ -1276,14 +1278,14 @@ Object.assign(window.NewCarouselSetup, {
                 var video = box.querySelector('video');
                 var frame = box.querySelector('iframe');
                 var preview = box.querySelector('.previewImg img');
-                var value = video && ratio(video.videoWidth, video.videoHeight);
+                // PC/MO picture의 현재 소스가 외곽 비율을 정한다. SDK 로딩을 기다리지 않는다.
+                var value = preview && !/img_baseimg_null\./.test(preview.currentSrc || preview.src || '') &&
+                    ratio(preview.naturalWidth, preview.naturalHeight);
+                if (!value && video) value = ratio(video.videoWidth, video.videoHeight);
                 if (!value && player) value = sourceRatio(player);
                 if (!value && frame) value = sourceRatio(frame);
-                if (!value && preview && !/img_baseimg_null\./.test(preview.currentSrc || preview.src || '')) {
-                    value = ratio(preview.naturalWidth, preview.naturalHeight);
-                }
-                if (!value && frame && isYoutubeFrame(frame)) value = 16 / 9;
-                if (!value || !visual.clientWidth) return;
+                if (!value) value = 16 / 9;
+                if (!visual.clientWidth) return;
 
                 // 높이는 visual 외곽만 만든다. kvBox/kvVideo/target/preview/플레이어 UI는 원본이 제어한다.
                 var height = Math.round(visual.clientWidth / value * 100) / 100 + 'px';
@@ -1297,9 +1299,9 @@ Object.assign(window.NewCarouselSetup, {
                         css(node, 'min-width', '0px');
                         css(node, 'max-width', 'none');
                     }
-                    // 같은 프레임 높이를 지웠다가 다시 쓰면 MutationObserver가 반복 실행된다.
-                    css(frame, 'height', 'var(--nc-visual-height, auto)');
-                    css(frame, 'block-size', 'var(--nc-visual-height, auto)');
+                    // 모바일 최소 높이까지 포함한 외곽을 채운다. 동일 값은 다시 쓰지 않는다.
+                    css(frame, 'height', '100%');
+                    css(frame, 'block-size', '100%');
                     css(frame, 'min-height', '0px');
                     css(frame, 'min-block-size', '0px');
                     css(frame, 'max-height', 'none');
@@ -1388,6 +1390,71 @@ Object.assign(window.NewCarouselSetup, {
                         attr(page, 'data-indicator-show-' + name, legacy);
                     }
                 });
+            }
+            function accessibility(state) {
+                var root = state.root, box = boxOf(root), sw = state.swiper;
+                if (!box || !sw || sw.destroyed) return;
+                var heading = root.querySelector('h1, h2, h3');
+                if (heading && !root.hasAttribute('aria-label') && !root.hasAttribute('aria-labelledby')) {
+                    if (!heading.id && root.id) heading.id = root.id + '-heading';
+                    if (heading.id) attr(root, 'aria-labelledby', heading.id);
+                }
+                attr(root, 'aria-roledescription', '캐러셀');
+                var bounds = box.getBoundingClientRect();
+                var slides = box.querySelectorAll('.swiper-wrapper > .swiper-slide:not(.swiper-slide-duplicate)');
+                for (var i = 0; i < slides.length; i += 1) {
+                    var slide = slides[i], rect = slide.getBoundingClientRect();
+                    // column/card는 동시에 보이는 여러 장을 모두 읽고 조작할 수 있어야 한다.
+                    var visible = rect.width > 0 && rect.right > bounds.left + 1 && rect.left < bounds.right - 1;
+                    attr(slide, 'aria-hidden', visible ? 'false' : 'true');
+                    if ('inert' in slide && slide.inert === visible) slide.inert = !visible;
+                    attr(slide, 'aria-roledescription', '슬라이드');
+                    attr(slide, 'aria-label', (i + 1) + ' / ' + slides.length);
+                }
+                var bullets = root.querySelectorAll('.swiper-pagination-bullet');
+                for (i = 0; i < bullets.length; i += 1) {
+                    attr(bullets[i], 'aria-label', (i + 1) + '번 슬라이드로 이동');
+                    if (matches(bullets[i], '.swiper-pagination-bullet-active')) attr(bullets[i], 'aria-current', 'true');
+                    else bullets[i].removeAttribute('aria-current');
+                }
+                var buttons = root.querySelectorAll('.kvVideoBtn');
+                for (i = 0; i < buttons.length; i += 1) {
+                    var button = buttons[i], visual = closest(button, '.visual-area', root);
+                    var target = visual && visual.querySelector('.kvVideo .target[id]');
+                    var media = visual && visual.querySelector('.kvVideo video');
+                    var item = target && win.kvVideoPlayer && win.kvVideoPlayer.obj && win.kvVideoPlayer.obj[target.id];
+                    var intent = visual && visual.__ncManualRequest;
+                    var playing = button.classList.contains('play');
+                    if (item && item.sort === 'video' && media && media.readyState >= 2) {
+                        playing = !media.paused && !media.ended || !!item.isPlayPending;
+                        if (intent && !intent.playing && !intent.departed) playing = false;
+                    }
+                    var label = playing ? '동영상 일시정지' : '동영상 재생';
+                    attr(button, 'aria-label', label);
+                    attr(button, 'title', label);
+                    if (target) attr(button, 'aria-controls', target.id);
+                    var blind = button.querySelector('.blind');
+                    if (blind && blind.textContent !== label) blind.textContent = label;
+                }
+                // BO의 이미지 링크명/새 창 정보를 보완한다. 콘텐츠별 alt는 BO에서 입력한다.
+                var links = root.querySelectorAll('a');
+                for (i = 0; i < links.length; i += 1) {
+                    var link = links[i];
+                    if (!link.hasAttribute('aria-label') && !link.textContent.trim() &&
+                        !link.getAttribute('title') && !link.querySelector('img[alt]:not([alt=""])')) {
+                        var bundle = closest(link, '.bundle-area', root);
+                        var title = bundle && bundle.querySelector('.title-area');
+                        if (title && title.textContent.trim()) attr(link, 'aria-label', title.textContent.trim().replace(/\s+/g, ' ') + ' 자세히 보기');
+                    }
+                    if (link.target && !/^_(self|parent|top)$/i.test(link.target)) {
+                        if (!/(^|\s)noopener(\s|$)/.test(link.rel)) link.rel = (link.rel + ' noopener').trim();
+                        if (!link.querySelector('[data-nc-new-window]')) {
+                            var hint = doc.createElement('span');
+                            hint.className = 'blind'; hint.setAttribute('data-nc-new-window', '');
+                            hint.textContent = ' (새 창)'; link.appendChild(hint);
+                        }
+                    }
+                }
             }
             function controls(state) {
                 var sw = state.swiper, page = state.root.querySelector('.page-area');
@@ -1745,6 +1812,7 @@ Object.assign(window.NewCarouselSetup, {
                 if (box) connect(state, box.swiper);
                 activeHeight(state);
                 controls(state);
+                accessibility(state);
             }
             function boot() {
                 var list = doc.querySelectorAll('.rvmp-cmpnt[class*="cmpnt-new-"]');
@@ -3124,6 +3192,11 @@ window.NewCarouselSetup.video = function () {
             if (!button || !button.classList) return;
             button.classList.toggle('play', playing);
             button.classList.toggle('pause', !playing);
+            var label = playing ? '동영상 일시정지' : '동영상 재생';
+            button.setAttribute('aria-label', label);
+            button.setAttribute('title', label);
+            var blind = button.querySelector('.blind');
+            if (blind && blind.textContent !== label) blind.textContent = label;
         }
         function showState(visual, playing) {
             var slide = closest(visual, '.kvItem.swiper-slide');
@@ -3433,7 +3506,16 @@ window.NewCarouselSetup.video = function () {
             // YouTube Auto ON의 원본 버튼 처리는 유지한다.
             var manualMp4Auto = item.sort === 'video' && (item.auto === true || item.auto === 'true');
             if ((item.auto === true || item.auto === 'true') && !manualMp4Auto) return;
+            var nativeMedia = visual.querySelector('.kvVideo video');
+            var previousIntent = visual.__ncManualRequest;
+            // SDK의 canplay/scroll 재생은 버튼 클래스를 갱신하지 않을 수 있다.
+            // 재생 중이면 실제 paused를 우선하고, 대기 요청과 수동 중지 의도도 보존한다.
             var playing = !button.classList.contains('play');
+            if (manualMp4Auto && nativeMedia) {
+                if (!nativeMedia.paused && !nativeMedia.ended) playing = false;
+                else if (previousIntent && !previousIntent.departed) playing = !previousIntent.playing;
+                else playing = !(item.isPlayPending || button.classList.contains('play'));
+            }
             var method = playing ? 'videoPlay' : 'videoStop';
             var previewMethod = playing ? 'hidePreview' : 'showPreview';
             if (typeof api[method] !== 'function') {
@@ -3461,8 +3543,8 @@ window.NewCarouselSetup.video = function () {
 
             // SDK의 지연 play·스크롤·리사이즈 재생도 이번 진입의 수동 중지를 존중한다.
             // 실제 슬라이드 이탈 뒤에는 원래 자동재생 정책으로 돌아간다.
-            if (manualMp4Auto && item.vod && !item.vod.__ncManualPlayGuard) {
-                var media = item.vod;
+            if (manualMp4Auto && nativeMedia && !nativeMedia.__ncManualPlayGuard) {
+                var media = nativeMedia;
                 var originalPlay = media.play;
                 if (typeof originalPlay === 'function') {
                     var guardedPlay = function () {
@@ -3476,6 +3558,18 @@ window.NewCarouselSetup.video = function () {
                         }
                         return originalPlay.apply(this, arguments);
                     };
+                    function mediaState() {
+                        var current = visual.__ncManualRequest;
+                        if (current && !current.playing && !current.departed && !media.paused) media.pause();
+                        var active = !media.paused && !media.ended;
+                        playButton(button, active);
+                        playButton(element(item.videoBtn), active);
+                        showState(visual, active);
+                        if (!active && typeof api.showPreview === 'function') api.showPreview(found.id);
+                    }
+                    media.addEventListener('play', mediaState);
+                    media.addEventListener('pause', mediaState);
+                    media.addEventListener('ended', mediaState);
                     media.__ncManualPlayGuard = guardedPlay;
                     media.play = guardedPlay;
                     if (swiper && swiper.on) {
@@ -3487,6 +3581,9 @@ window.NewCarouselSetup.video = function () {
                             if (target) target.__ncManualStop = null;
                         };
                         var destroy = function () {
+                            media.removeEventListener('play', mediaState);
+                            media.removeEventListener('pause', mediaState);
+                            media.removeEventListener('ended', mediaState);
                             if (media.play === guardedPlay) media.play = originalPlay;
                             if (media.__ncManualPlayGuard === guardedPlay) delete media.__ncManualPlayGuard;
                             if (target) target.__ncManualStop = null;
@@ -3524,6 +3621,11 @@ window.NewCarouselSetup.video = function () {
             try {
                 // 원본과 같은 인스턴스·API를 사용한다. 중지는 원본의 초기화 인자를 유지한다.
                 result = playing ? api.videoPlay(found.id) : api.videoStop(found.id, true);
+                if (manualMp4Auto && !playing && nativeMedia) {
+                    nativeMedia.pause();
+                    item.isPlayPending = false;
+                    item.lastPlayRequestAt = 0;
+                }
             } catch (error) { failed(error); return; }
             if (typeof api[previewMethod] === 'function') {
                 try { api[previewMethod](found.id); }
@@ -3547,9 +3649,6 @@ window.NewCarouselSetup.video = function () {
 
 }());
 </script>
-    <!-- 검토 환경 전용: 운영 공통 스크립트와 분리 -->
-    <link rel="stylesheet" href="./preview-media-compat.css">
-    <script src="./preview-media-compat.js"></script>
 
     <script id="newCarouselInitScript">
         // 아래처럼 호출
