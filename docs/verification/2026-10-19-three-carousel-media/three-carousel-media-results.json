@@ -1,0 +1,139 @@
+[
+  {
+    "name": "three carousel instances",
+    "status": "PASS"
+  },
+  {
+    "name": "independent instances",
+    "status": "PASS"
+  },
+  {
+    "name": "unique IDs",
+    "status": "PASS"
+  },
+  {
+    "name": "all MP4 data loaded",
+    "status": "PASS"
+  },
+  {
+    "name": "all three SDK auto play",
+    "status": "PASS",
+    "detail": [
+      {
+        "paused": false,
+        "time": 0.176381
+      },
+      {
+        "paused": false,
+        "time": 0.159667
+      },
+      {
+        "paused": false,
+        "time": 0.146123
+      }
+    ]
+  },
+  {
+    "name": "section 1 circle stop isolated",
+    "status": "PASS",
+    "detail": [
+      {
+        "paused": true,
+        "time": 0
+      },
+      {
+        "paused": false,
+        "time": 0.668441
+      },
+      {
+        "paused": false,
+        "time": 0.654898
+      }
+    ]
+  },
+  {
+    "name": "section 1 stopped accessible label",
+    "status": "PASS"
+  },
+  {
+    "name": "section 1 resumes",
+    "status": "PASS"
+  },
+  {
+    "name": "section 2 circle stop isolated",
+    "status": "PASS",
+    "detail": [
+      {
+        "paused": false,
+        "time": 0.471014
+      },
+      {
+        "paused": true,
+        "time": 0
+      },
+      {
+        "paused": false,
+        "time": 1.126411
+      }
+    ]
+  },
+  {
+    "name": "section 2 stopped accessible label",
+    "status": "PASS"
+  },
+  {
+    "name": "section 2 resumes",
+    "status": "PASS"
+  },
+  {
+    "name": "section 3 circle stop isolated",
+    "status": "PASS",
+    "detail": [
+      {
+        "paused": false,
+        "time": 0.875981
+      },
+      {
+        "paused": false,
+        "time": 0.403524
+      },
+      {
+        "paused": true,
+        "time": 0
+      }
+    ]
+  },
+  {
+    "name": "section 3 stopped accessible label",
+    "status": "PASS"
+  },
+  {
+    "name": "section 3 resumes",
+    "status": "PASS"
+  },
+  {
+    "name": "middle pagination isolated",
+    "status": "PASS",
+    "detail": [
+      1,
+      0,
+      1
+    ]
+  },
+  {
+    "name": "middle navigation keeps outer MP4 playing",
+    "status": "PASS"
+  },
+  {
+    "name": "middle MP4 autoplay after return",
+    "status": "PASS"
+  },
+  {
+    "name": "repeat init does not replace instances",
+    "status": "PASS"
+  },
+  {
+    "name": "manual stops survive resize together",
+    "status": "PASS"
+  }
+]
