@@ -18502,12 +18502,6 @@
                         // tooltip에는 tabindex나 focus()를 사용하지 않습니다.
                     });
 
-                    scope.addEventListener('focusout', function(e) {
-                        var current = scope._inlinePriceTooltip;
-                        if (!current || !current.button.contains(e.target)) return;
-                        if (e.relatedTarget && current.button.contains(e.relatedTarget)) return;
-                        close(scope);
-                    });
                     boundCount++;
                 }
 
@@ -19576,12 +19570,6 @@
                         // tooltip에는 tabindex나 focus()를 사용하지 않습니다.
                     });
 
-                    scope.addEventListener('focusout', function(e) {
-                        var current = scope._inlinePriceTooltip;
-                        if (!current || !current.button.contains(e.target)) return;
-                        if (e.relatedTarget && current.button.contains(e.relatedTarget)) return;
-                        close(scope);
-                    });
                     boundCount++;
                 }
 
