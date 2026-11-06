@@ -988,17 +988,24 @@
             </div>
 
 			<script>
-                // s: 컴포넌트별 스크립트 범위 — 같은 함수명과 프레임 상태가 다른 슬라이더와 충돌하지 않도록 격리.
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
                 (function ($carousel) {
-                // s: 위치 보정 통합 — 기존 분리 ind-in script를 이곳에 통합; 다섯 컴포넌트에 동일하게 추가하며 ind-in만 동작.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
                 var controlsFrame = null;
-                function updateSliderControlsBottom() {
-                    if (controlsFrame !== null || !$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
                     controlsFrame = requestAnimationFrame(function () {
                         controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
                         if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
                         var slick = $carousel.slick('getSlick');
-                        var visual = slick.$slides[slick.currentSlide];
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
                         var controls = $carousel.siblings('.slider-controls')[0];
                         var parent = controls && controls.offsetParent;
                         if (!visual || !controls || !parent ||
@@ -1008,10 +1015,13 @@
                         if (!visualRect.height) return;
                         var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
                         var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-                        controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
                     });
                 }
-                // e: 위치 보정 통합 — 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
                 if (device.isApp == true) {
                     $('#slideCarousel1').on('init', function(event, slick){
@@ -1057,30 +1067,41 @@
                     });
                 };
 
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
                 $("#slideCarousel1").on({
                     init: function(event, slick){
                         updateTabindex();
-                        // 수정: init에서 활성 .visual 기준 컨트롤 위치를 갱신.
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
                         updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
                     }
                 , afterChange: function(event, slick, currentSlide){
                         updateTabindex();
-                        // 수정: afterChange에서 활성 .visual 기준 컨트롤 위치를 갱신.
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
                         updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
                     }
-                , setPosition: updateSliderControlsBottom // 수정: Slick 레이아웃 재계산 시 갱신.
-                , reInit: updateSliderControlsBottom // 수정: Slick 재초기화 시 갱신.
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+                // KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
                 });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
 
-                // 수정: 내부 이미지/영상 로드 후 치수 변화 반영(캡처, 이 컴포넌트만).
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
                 if ($carousel.length) {
                     $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
                     $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
                 }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
                 vodCompoSlide('#slideCarousel1', 'type1', 3000, ctarrow_5250992, ctindi_5250992);
-                // 수정: 기존 동기 초기화 직후에도 한 번 예약; 중복 이벤트는 같은 프레임으로 합침.
+                // KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
                 updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
                 $(window).resize(function () {
                     ctarrow_5250992 = true;
@@ -1106,8 +1127,9 @@
                     } else {
                         $('#slideCarousel1').parent().find('.slider-controls').addClass('hide');
                     }
-                    // 수정: 기존 resize 처리 후 현재 슬라이드 위치 갱신.
+                    // KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
                     updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
                 });
 
                 $(function(){
@@ -1151,8 +1173,9 @@
 					$vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
 				}
                 */
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
                 })($('#slideCarousel1'));
-                // e: 컴포넌트별 스크립트 범위.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : countdown / date (default type / mobile 텍스트 비주얼 영역 분리) -->
@@ -1289,17 +1312,24 @@
 			</div>
 
 			<script>
-                // s: 컴포넌트별 스크립트 범위 — 같은 함수명과 프레임 상태가 다른 슬라이더와 충돌하지 않도록 격리.
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
                 (function ($carousel) {
-                // s: 위치 보정 통합 — 기존 분리 ind-in script를 이곳에 통합; 다섯 컴포넌트에 동일하게 추가하며 ind-in만 동작.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
                 var controlsFrame = null;
-                function updateSliderControlsBottom() {
-                    if (controlsFrame !== null || !$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
                     controlsFrame = requestAnimationFrame(function () {
                         controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
                         if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
                         var slick = $carousel.slick('getSlick');
-                        var visual = slick.$slides[slick.currentSlide];
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
                         var controls = $carousel.siblings('.slider-controls')[0];
                         var parent = controls && controls.offsetParent;
                         if (!visual || !controls || !parent ||
@@ -1309,10 +1339,13 @@
                         if (!visualRect.height) return;
                         var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
                         var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-                        controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
                     });
                 }
-                // e: 위치 보정 통합 — 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
 				if (device.isApp == true) {
 					$('#slideCarousel2').on('init', function(event, slick){
@@ -1357,30 +1390,41 @@
 					});
 				};
 
+			// KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
 			$("#slideCarousel2").on({
 				init: function(event, slick){
 					updateTabindex();
-					// 수정: init에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					// 수정: afterChange에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
 				}
-			, setPosition: updateSliderControlsBottom // 수정: Slick 레이아웃 재계산 시 갱신.
-			, reInit: updateSliderControlsBottom // 수정: Slick 재초기화 시 갱신.
+			// KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+			, beforeChange: function(event, slick, currentSlide, nextSlide) {
+			    updateSliderControlsBottom(nextSlide);
+			}
+			, setPosition: updateSliderControlsBottom
+			, reInit: updateSliderControlsBottom
+			// KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
 			});
+			// KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
 
-			// 수정: 내부 이미지/영상 로드 후 치수 변화 반영(캡처, 이 컴포넌트만).
+			// KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
 			if ($carousel.length) {
 			    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
 			    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
 			}
+			// KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
 			vodCompoSlide('#slideCarousel2', 'type1', 3000, ctarrow_5264755, ctindi_5264755);
-			// 수정: 기존 동기 초기화 직후에도 한 번 예약; 중복 이벤트는 같은 프레임으로 합침.
+			// KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
 			updateSliderControlsBottom();
+			// KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
 				$(window).resize(function () {
 					ctarrow_5264755 = true;
@@ -1405,8 +1449,9 @@
 				} else {
 					$('#slideCarousel2').parent().find('.slider-controls').addClass('hide');
 				}
-				// 수정: 기존 resize 처리 후 현재 슬라이드 위치 갱신.
+				// KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
 				updateSliderControlsBottom();
+				// KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
 			});
 
 				$(function(){
@@ -1435,8 +1480,9 @@
 						}
 					});
 				});
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
                 })($('#slideCarousel2'));
-                // e: 컴포넌트별 스크립트 범위.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : 컴포넌트1 -->
@@ -1573,17 +1619,24 @@
 			</div>
 
 			<script>
-                // s: 컴포넌트별 스크립트 범위 — 같은 함수명과 프레임 상태가 다른 슬라이더와 충돌하지 않도록 격리.
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
                 (function ($carousel) {
-                // s: 위치 보정 통합 — 기존 분리 ind-in script를 이곳에 통합; 다섯 컴포넌트에 동일하게 추가하며 ind-in만 동작.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
                 var controlsFrame = null;
-                function updateSliderControlsBottom() {
-                    if (controlsFrame !== null || !$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
                     controlsFrame = requestAnimationFrame(function () {
                         controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
                         if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
                         var slick = $carousel.slick('getSlick');
-                        var visual = slick.$slides[slick.currentSlide];
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
                         var controls = $carousel.siblings('.slider-controls')[0];
                         var parent = controls && controls.offsetParent;
                         if (!visual || !controls || !parent ||
@@ -1593,10 +1646,13 @@
                         if (!visualRect.height) return;
                         var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
                         var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-                        controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
                     });
                 }
-                // e: 위치 보정 통합 — 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
 				if (device.isApp == true) {
 					$('#slideCarousel3').on('init', function(event, slick){
@@ -1641,30 +1697,41 @@
 					});
 				};
 
+			// KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
 			$("#slideCarousel3").on({
 				init: function(event, slick){
 					updateTabindex();
-					// 수정: init에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					// 수정: afterChange에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
 				}
-			, setPosition: updateSliderControlsBottom // 수정: Slick 레이아웃 재계산 시 갱신.
-			, reInit: updateSliderControlsBottom // 수정: Slick 재초기화 시 갱신.
+			// KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+			, beforeChange: function(event, slick, currentSlide, nextSlide) {
+			    updateSliderControlsBottom(nextSlide);
+			}
+			, setPosition: updateSliderControlsBottom
+			, reInit: updateSliderControlsBottom
+			// KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
 			});
+			// KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
 
-			// 수정: 내부 이미지/영상 로드 후 치수 변화 반영(캡처, 이 컴포넌트만).
+			// KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
 			if ($carousel.length) {
 			    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
 			    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
 			}
+			// KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
 			vodCompoSlide('#slideCarousel3', 'type1', 3000, ctarrow_5250994, ctindi_5250994);
-			// 수정: 기존 동기 초기화 직후에도 한 번 예약; 중복 이벤트는 같은 프레임으로 합침.
+			// KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
 			updateSliderControlsBottom();
+			// KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
 				$(window).resize(function () {
 					ctarrow_5250994 = true;
@@ -1689,8 +1756,9 @@
 				} else {
 					$('#slideCarousel3').parent().find('.slider-controls').addClass('hide');
 				}
-				// 수정: 기존 resize 처리 후 현재 슬라이드 위치 갱신.
+				// KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
 				updateSliderControlsBottom();
+				// KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
 			});
 
 				$(function(){
@@ -1719,8 +1787,9 @@
 						}
 					});
 				});
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
                 })($('#slideCarousel3'));
-                // e: 컴포넌트별 스크립트 범위.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : 컴포넌트2 -->
@@ -1857,17 +1926,24 @@
 			</div>
 
 			<script>
-                // s: 컴포넌트별 스크립트 범위 — 같은 함수명과 프레임 상태가 다른 슬라이더와 충돌하지 않도록 격리.
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
                 (function ($carousel) {
-                // s: 위치 보정 통합 — 기존 분리 ind-in script를 이곳에 통합; 다섯 컴포넌트에 동일하게 추가하며 ind-in만 동작.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
                 var controlsFrame = null;
-                function updateSliderControlsBottom() {
-                    if (controlsFrame !== null || !$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
                     controlsFrame = requestAnimationFrame(function () {
                         controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
                         if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
                         var slick = $carousel.slick('getSlick');
-                        var visual = slick.$slides[slick.currentSlide];
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
                         var controls = $carousel.siblings('.slider-controls')[0];
                         var parent = controls && controls.offsetParent;
                         if (!visual || !controls || !parent ||
@@ -1877,10 +1953,13 @@
                         if (!visualRect.height) return;
                         var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
                         var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-                        controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
                     });
                 }
-                // e: 위치 보정 통합 — 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
 				if (device.isApp == true) {
 					$('#slideCarousel4').on('init', function(event, slick){
@@ -1925,30 +2004,41 @@
 					});
 				};
 
+			// KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
 			$("#slideCarousel4").on({
 				init: function(event, slick){
 					updateTabindex();
-					// 수정: init에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					// 수정: afterChange에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
 				}
-			, setPosition: updateSliderControlsBottom // 수정: Slick 레이아웃 재계산 시 갱신.
-			, reInit: updateSliderControlsBottom // 수정: Slick 재초기화 시 갱신.
+			// KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+			, beforeChange: function(event, slick, currentSlide, nextSlide) {
+			    updateSliderControlsBottom(nextSlide);
+			}
+			, setPosition: updateSliderControlsBottom
+			, reInit: updateSliderControlsBottom
+			// KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
 			});
+			// KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
 
-			// 수정: 내부 이미지/영상 로드 후 치수 변화 반영(캡처, 이 컴포넌트만).
+			// KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
 			if ($carousel.length) {
 			    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
 			    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
 			}
+			// KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
 			vodCompoSlide('#slideCarousel4', 'type1', 3000, ctarrow_5250995, ctindi_5250995);
-			// 수정: 기존 동기 초기화 직후에도 한 번 예약; 중복 이벤트는 같은 프레임으로 합침.
+			// KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
 			updateSliderControlsBottom();
+			// KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
 				$(window).resize(function () {
 					ctarrow_5250995 = true;
@@ -1973,8 +2063,9 @@
 				} else {
 					$('#slideCarousel4').parent().find('.slider-controls').addClass('hide');
 				}
-				// 수정: 기존 resize 처리 후 현재 슬라이드 위치 갱신.
+				// KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
 				updateSliderControlsBottom();
+				// KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
 			});
 
 				$(function(){
@@ -2003,8 +2094,9 @@
 						}
 					});
 				});
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
                 })($('#slideCarousel4'));
-                // e: 컴포넌트별 스크립트 범위.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : 컴포넌트3 -->
@@ -2134,17 +2226,24 @@
 			</div>
 
 			<script>
-                // s: 컴포넌트별 스크립트 범위 — 같은 함수명과 프레임 상태가 다른 슬라이더와 충돌하지 않도록 격리.
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
                 (function ($carousel) {
-                // s: 위치 보정 통합 — 기존 분리 ind-in script를 이곳에 통합; 다섯 컴포넌트에 동일하게 추가하며 ind-in만 동작.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
                 var controlsFrame = null;
-                function updateSliderControlsBottom() {
-                    if (controlsFrame !== null || !$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
                     controlsFrame = requestAnimationFrame(function () {
                         controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
                         if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
                         var slick = $carousel.slick('getSlick');
-                        var visual = slick.$slides[slick.currentSlide];
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
                         var controls = $carousel.siblings('.slider-controls')[0];
                         var parent = controls && controls.offsetParent;
                         if (!visual || !controls || !parent ||
@@ -2154,10 +2253,13 @@
                         if (!visualRect.height) return;
                         var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
                         var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-                        controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
                     });
                 }
-                // e: 위치 보정 통합 — 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
 				if (device.isApp == true) {
 					$('#slideCarousel5').on('init', function(event, slick){
@@ -2202,30 +2304,41 @@
 					});
 				};
 
+			// KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
 			$("#slideCarousel5").on({
 				init: function(event, slick){
 					updateTabindex();
-					// 수정: init에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					// 수정: afterChange에서 활성 .visual 기준 컨트롤 위치를 갱신.
+					// KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
 					updateSliderControlsBottom();
+					// KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
 				}
-			, setPosition: updateSliderControlsBottom // 수정: Slick 레이아웃 재계산 시 갱신.
-			, reInit: updateSliderControlsBottom // 수정: Slick 재초기화 시 갱신.
+			// KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+			, beforeChange: function(event, slick, currentSlide, nextSlide) {
+			    updateSliderControlsBottom(nextSlide);
+			}
+			, setPosition: updateSliderControlsBottom
+			, reInit: updateSliderControlsBottom
+			// KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
 			});
+			// KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
 
-			// 수정: 내부 이미지/영상 로드 후 치수 변화 반영(캡처, 이 컴포넌트만).
+			// KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
 			if ($carousel.length) {
 			    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
 			    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
 			}
+			// KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
 			vodCompoSlide('#slideCarousel5', 'type1', 3000, ctarrow_5250996, ctindi_5250996);
-			// 수정: 기존 동기 초기화 직후에도 한 번 예약; 중복 이벤트는 같은 프레임으로 합침.
+			// KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
 			updateSliderControlsBottom();
+			// KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
 				$(window).resize(function () {
 					ctarrow_5250996 = true;
@@ -2250,8 +2363,9 @@
 				} else {
 					$('#slideCarousel5').parent().find('.slider-controls').addClass('hide');
 				}
-				// 수정: 기존 resize 처리 후 현재 슬라이드 위치 갱신.
+				// KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
 				updateSliderControlsBottom();
+				// KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
 			});
 
 				$(function(){
@@ -2280,8 +2394,9 @@
 						}
 					});
 				});
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
                 })($('#slideCarousel5'));
-                // e: 컴포넌트별 스크립트 범위.
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : 컴포넌트4 -->
