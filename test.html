@@ -1020,25 +1020,50 @@
                     }
                 }
 
-                // slider-controls의 bottom을 현재 슬라이드의 visual-area 높이로 설정
+                // s: 스크립트 수정
                 function updateSliderControlsBottom(slick) {
-                    var currentSlide = slick.currentSlide || 0;
-                    var $slide = $(slick.$slides[currentSlide]);
-                    var $visualArea = $slide.find('.visual-area');
-                    var $sliderControls = $slide.closest('.component-contents').find('.slider-controls');
-                    if ($visualArea.length && $sliderControls.length) {
-                        $sliderControls.css('bottom', $visualArea.outerHeight() + 'px');
-                    }
+                    if (!slick || !slick.$slider || !slick.$slider.is('.slider-carousel-visual.ind-in') || slick.indInControlsFrame) return;
+
+                    slick.indInControlsFrame = requestAnimationFrame(function () {
+                        slick.indInControlsFrame = null;
+                        if (!slick.$slider.is('.slider-carousel-visual.ind-in.slick-initialized') || !slick.$slides) return;
+
+                        var $visualArea = $(slick.$slides[slick.currentSlide]).find('.visual-area').first();
+                        var $sliderControls = slick.$slider.siblings('.slider-controls').first();
+                        if (!$visualArea.length || !$sliderControls.length) return;
+
+                        var visual = $visualArea[0];
+                        var controls = $sliderControls[0];
+                        if (!visual.getClientRects().length || !controls.getClientRects().length) return;
+
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+
+                        var bottom = parseFloat(getComputedStyle(controls).bottom);
+                        if (!isFinite(bottom)) return;
+
+                        var controlsRect = controls.getBoundingClientRect();
+                        $sliderControls.css('bottom', (bottom + controlsRect.bottom - visualRect.bottom + 66) + 'px');
+                    });
                 }
                 function updateSliderControlsBottomById(carouselId) {
                     var $carousel = $(carouselId);
-                    var $activeSlide = $carousel.find('.slick-active');
-                    var $visualArea = $activeSlide.find('.visual-area');
-                    var $sliderControls = $carousel.closest('.component-contents').find('.slider-controls');
-                    if ($visualArea.length && $sliderControls.length) {
-                        $sliderControls.css('bottom', $visualArea.outerHeight() + 'px');
+                    if ($carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) {
+                        updateSliderControlsBottom($carousel.slick('getSlick'));
                     }
                 }
+
+                $(document).on('beforeChange.indInControls setPosition.indInControls reInit.indInControls', '.slider-carousel-visual.ind-in', function (event, slick) {
+                    updateSliderControlsBottom(slick);
+                });
+
+                function updateIndInControlsForMedia(event) {
+                    var carousel = $(event.target).closest('.slider-carousel-visual.ind-in.slick-initialized');
+                    if (carousel.length) updateSliderControlsBottom(carousel.slick('getSlick'));
+                }
+                document.addEventListener('load', updateIndInControlsForMedia, true);
+                document.addEventListener('loadedmetadata', updateIndInControlsForMedia, true);
+                // e: 스크립트 수정
 
                 function updateTabindex(){
                     $("#slideCarousel1 .slick-slide").each(function (index, item) {
