@@ -1020,6 +1020,8 @@
                     }
                 }
 
+                /* 이전 위치 보정 비활성화: .visual-area 기준이어서 요구한 활성 .visual 하단과 다릅니다.
+                   아래 ind-in 전용 추가 코드와 중복 실행되지 않도록 원문을 보존합니다.
                 // s: 스크립트 수정
                 function updateSliderControlsBottom(slick) {
                     if (!slick || !slick.$slider || !slick.$slider.is('.slider-carousel-visual.ind-in') || slick.indInControlsFrame) return;
@@ -1064,6 +1066,7 @@
                 document.addEventListener('load', updateIndInControlsForMedia, true);
                 document.addEventListener('loadedmetadata', updateIndInControlsForMedia, true);
                 // e: 스크립트 수정
+                   이전 위치 보정 비활성화 끝 */
 
                 function updateTabindex(){
                     $("#slideCarousel1 .slick-slide").each(function (index, item) {
@@ -1081,11 +1084,11 @@
                 $("#slideCarousel1").on({
                     init: function(event, slick){
                         updateTabindex();
-                        updateSliderControlsBottom(slick);
+                        // 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
                     }
                 , afterChange: function(event, slick, currentSlide){
                         updateTabindex();
-                        updateSliderControlsBottom(slick);
+                        // 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
                     }
                 });
 
@@ -1116,7 +1119,7 @@
                     } else {
                         $('#slideCarousel1').parent().find('.slider-controls').addClass('hide');
                     }
-                    updateSliderControlsBottomById('#slideCarousel1');
+                    // 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottomById('#slideCarousel1');
                 });
 
                 $(function(){
@@ -1344,11 +1347,11 @@
 			$("#slideCarousel2").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1377,7 +1380,7 @@
 				} else {
 					$('#slideCarousel2').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel2');
+				// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottomById('#slideCarousel2');
 			});
 
 				$(function(){
@@ -1588,11 +1591,11 @@
 			$("#slideCarousel3").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1621,7 +1624,7 @@
 				} else {
 					$('#slideCarousel3').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel3');
+				// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottomById('#slideCarousel3');
 			});
 
 				$(function(){
@@ -1651,6 +1654,42 @@
 					});
 				});
 			</script>
+		<!-- s: slideCarousel3 ind-in 전용 위치 보정 추가
+             붙여넣기 위치: 이 컴포넌트의 기존 script 닫힘 바로 뒤, 컴포넌트 닫힘 앞.
+             이 ind-in만 대상으로 합니다. 다른 컴포넌트에 적용할 때는 마지막 ID만 변경하세요.
+             66은 활성 .visual 하단에서 컨트롤 하단까지 안쪽(위쪽)으로 띄우는 간격(px)입니다.
+             기존 vodCompoSlide/재생/tabindex/앱 테마는 유지하고, 이전 공통 보정 호출은 중복 방지를 위해 주석 처리했습니다. -->
+        <script>
+        (function ($slider) {
+            var frame = null;
+            function update() {
+                if (frame || !$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                frame = requestAnimationFrame(function () {
+                    frame = null;
+                    if (!$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    var slick = $slider.slick('getSlick');
+                    var visual = slick.$slides[slick.currentSlide];
+                    var controls = $slider.siblings('.slider-controls')[0];
+                    var parent = controls && controls.offsetParent;
+                    if (!visual || !controls || !parent ||
+                        !visual.getClientRects().length || !controls.getClientRects().length ||
+                        !parent.getClientRects().length) return;
+                    var visualRect = visual.getBoundingClientRect();
+                    if (!visualRect.height) return;
+                    var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                    var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
+                    // 기준 높이 800, 현재 .visual 높이 600(상단 동일), 마진 0이면 bottom 266; 높이 800이면 66.
+                    controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                });
+            }
+            $slider.on('init.indInVisualControls afterChange.indInVisualControls setPosition.indInVisualControls reInit.indInVisualControls', update);
+            window.addEventListener('resize', update);
+            $slider[0].addEventListener('load', update, true);
+            $slider[0].addEventListener('loadedmetadata', update, true);
+            update(); // 기존 초기화가 이미 끝난 상태도 적용
+        })($('#slideCarousel3'));
+        </script>
+        <!-- e: slideCarousel3 ind-in 전용 위치 보정 추가 -->
 		</div>
 		<!-- e : 컴포넌트2 -->
 
@@ -1832,11 +1871,11 @@
 			$("#slideCarousel4").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1865,7 +1904,7 @@
 				} else {
 					$('#slideCarousel4').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel4');
+				// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottomById('#slideCarousel4');
 			});
 
 				$(function(){
@@ -1895,6 +1934,42 @@
 					});
 				});
 			</script>
+		<!-- s: slideCarousel4 ind-in 전용 위치 보정 추가
+             붙여넣기 위치: 이 컴포넌트의 기존 script 닫힘 바로 뒤, 컴포넌트 닫힘 앞.
+             이 ind-in만 대상으로 합니다. 다른 컴포넌트에 적용할 때는 마지막 ID만 변경하세요.
+             66은 활성 .visual 하단에서 컨트롤 하단까지 안쪽(위쪽)으로 띄우는 간격(px)입니다.
+             기존 vodCompoSlide/재생/tabindex/앱 테마는 유지하고, 이전 공통 보정 호출은 중복 방지를 위해 주석 처리했습니다. -->
+        <script>
+        (function ($slider) {
+            var frame = null;
+            function update() {
+                if (frame || !$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                frame = requestAnimationFrame(function () {
+                    frame = null;
+                    if (!$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    var slick = $slider.slick('getSlick');
+                    var visual = slick.$slides[slick.currentSlide];
+                    var controls = $slider.siblings('.slider-controls')[0];
+                    var parent = controls && controls.offsetParent;
+                    if (!visual || !controls || !parent ||
+                        !visual.getClientRects().length || !controls.getClientRects().length ||
+                        !parent.getClientRects().length) return;
+                    var visualRect = visual.getBoundingClientRect();
+                    if (!visualRect.height) return;
+                    var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                    var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
+                    // 기준 높이 800, 현재 .visual 높이 600(상단 동일), 마진 0이면 bottom 266; 높이 800이면 66.
+                    controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                });
+            }
+            $slider.on('init.indInVisualControls afterChange.indInVisualControls setPosition.indInVisualControls reInit.indInVisualControls', update);
+            window.addEventListener('resize', update);
+            $slider[0].addEventListener('load', update, true);
+            $slider[0].addEventListener('loadedmetadata', update, true);
+            update(); // 기존 초기화가 이미 끝난 상태도 적용
+        })($('#slideCarousel4'));
+        </script>
+        <!-- e: slideCarousel4 ind-in 전용 위치 보정 추가 -->
 		</div>
 		<!-- e : 컴포넌트3 -->
 
@@ -2069,11 +2144,11 @@
 			$("#slideCarousel5").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
+					// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -2102,7 +2177,7 @@
 				} else {
 					$('#slideCarousel5').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel5');
+				// 수정: 이전 공통 위치 보정 중지; ind-in은 전용 추가 스크립트, ind-out은 CSS 위치 사용. 원문: updateSliderControlsBottomById('#slideCarousel5');
 			});
 
 				$(function(){
@@ -2132,6 +2207,42 @@
 					});
 				});
 			</script>
+		<!-- s: slideCarousel5 ind-in 전용 위치 보정 추가
+             붙여넣기 위치: 이 컴포넌트의 기존 script 닫힘 바로 뒤, 컴포넌트 닫힘 앞.
+             이 ind-in만 대상으로 합니다. 다른 컴포넌트에 적용할 때는 마지막 ID만 변경하세요.
+             66은 활성 .visual 하단에서 컨트롤 하단까지 안쪽(위쪽)으로 띄우는 간격(px)입니다.
+             기존 vodCompoSlide/재생/tabindex/앱 테마는 유지하고, 이전 공통 보정 호출은 중복 방지를 위해 주석 처리했습니다. -->
+        <script>
+        (function ($slider) {
+            var frame = null;
+            function update() {
+                if (frame || !$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                frame = requestAnimationFrame(function () {
+                    frame = null;
+                    if (!$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    var slick = $slider.slick('getSlick');
+                    var visual = slick.$slides[slick.currentSlide];
+                    var controls = $slider.siblings('.slider-controls')[0];
+                    var parent = controls && controls.offsetParent;
+                    if (!visual || !controls || !parent ||
+                        !visual.getClientRects().length || !controls.getClientRects().length ||
+                        !parent.getClientRects().length) return;
+                    var visualRect = visual.getBoundingClientRect();
+                    if (!visualRect.height) return;
+                    var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                    var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
+                    // 기준 높이 800, 현재 .visual 높이 600(상단 동일), 마진 0이면 bottom 266; 높이 800이면 66.
+                    controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                });
+            }
+            $slider.on('init.indInVisualControls afterChange.indInVisualControls setPosition.indInVisualControls reInit.indInVisualControls', update);
+            window.addEventListener('resize', update);
+            $slider[0].addEventListener('load', update, true);
+            $slider[0].addEventListener('loadedmetadata', update, true);
+            update(); // 기존 초기화가 이미 끝난 상태도 적용
+        })($('#slideCarousel5'));
+        </script>
+        <!-- e: slideCarousel5 ind-in 전용 위치 보정 추가 -->
 		</div>
 		<!-- e : 컴포넌트4 -->
     </div>
