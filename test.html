@@ -856,7 +856,7 @@
 
         <!-- s : countdown / date (default type / mobile 텍스트 비주얼 영역 분리) -->
 		<div class="wrap-component carousel-container new-component new-carousel-container pt-nrml pb-nrml w1440px">
-            <div class="component-contents pt-nrml pb-none gt-wrap type-video"
+            <div class="component-contents pt-nrml pb-none gt-wrap"
                 style="background-color: #fff"
                 data-cptnm="맞춤형 조합으로 주방을 나답게 나만의 조합 & 오리지널 키친핏-250221">
 
@@ -988,6 +988,43 @@
             </div>
 
 			<script>
+			// KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
+			(function ($carousel) {
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
+
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
+                var controlsFrame = null;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
+                    controlsFrame = requestAnimationFrame(function () {
+                        controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
+                        if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                        var slick = $carousel.slick('getSlick');
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
+                        var controls = $carousel.siblings('.slider-controls')[0];
+                        var parent = controls && controls.offsetParent;
+                        if (!visual || !controls || !parent ||
+                            !visual.getClientRects().length || !controls.getClientRects().length ||
+                            !parent.getClientRects().length) return;
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+                        var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                        var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
+
+						// KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
+                    });
+                }
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
+
                 if (device.isApp == true) {
                     $('#slideCarousel1').on('init', function(event, slick){
                         try {
@@ -1032,16 +1069,45 @@
                     });
                 };
 
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
                 $("#slideCarousel1").on({
                     init: function(event, slick){
                         updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
+
+						updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
                     }
                 , afterChange: function(event, slick, currentSlide){
                         updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
+
+						updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
                     }
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+
+				// KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
                 });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
+
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
+                if ($carousel.length) {
+                    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
+                    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
+                }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
 
                 vodCompoSlide('#slideCarousel1', 'type1', 3000, ctarrow_5250992, ctindi_5250992);
+
+				// KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
+                updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
 
                 $(window).resize(function () {
                     ctarrow_5250992 = true;
@@ -1067,6 +1133,10 @@
                     } else {
                         $('#slideCarousel1').parent().find('.slider-controls').addClass('hide');
                     }
+
+					// KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
+                    updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
                 });
 
                 $(function(){
@@ -1110,13 +1180,17 @@
 					$vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
 				}
                 */
+
+				// KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
+			})($('#slideCarousel1'));
+			// KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
             </script>
 		</div>
 		<!-- e : countdown / date (default type / mobile 텍스트 비주얼 영역 분리) -->
 
 		<!-- s : 컴포넌트1 (원본 복사) -->
 		<div class="wrap-component carousel-container new-component new-carousel-container pt-nrml pb-nrml w1440px">
-			<div class="component-contents pt-nrml pb-none gt-wrap type-video"
+			<div class="component-contents pt-nrml pb-none gt-wrap"
 				style="background-color: #eee"
 				data-cptnm="컴포넌트1 - 원본 복사">
 				<!-- s: slider-carousel-visual -->
@@ -1246,118 +1320,208 @@
 			</div>
 
 			<script>
-				if (device.isApp == true) {
-					$('#slideCarousel2').on('init', function(event, slick){
-						try {
-							if(stGbCd == 20 || stGbCd == 30){
-								window.secapp.setSecAppGnbTheme('BW');
-							}else{
-								window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
-							}
-						} catch (err) {
-						}
-					});
-				}
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
+                (function ($carousel) {
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
 
-				var ctarrow_5264755 = true;
-				var ctindi_5264755 = true;
-				if (device.val == 't' || device.val == 'p') {
-					if ("001" != "001") {
-						ctindi_5264755 = false;
-					}
-					if ("001" != "001") {
-						ctarrow_5264755 = false;
-					}
-				} else {
-					if ("001" != "001") {
-						ctindi_5264755 = false;
-					}
-					if ("002" != "001") {
-						ctarrow_5264755 = false;
-					}
-				}
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
+                var controlsFrame = null;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
+                    controlsFrame = requestAnimationFrame(function () {
+                        controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
+                        if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                        var slick = $carousel.slick('getSlick');
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
+                        var controls = $carousel.siblings('.slider-controls')[0];
+                        var parent = controls && controls.offsetParent;
+                        if (!visual || !controls || !parent ||
+                            !visual.getClientRects().length || !controls.getClientRects().length ||
+                            !parent.getClientRects().length) return;
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+                        var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                        var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
 
-				function updateTabindex(){
-					$("#slideCarousel2 .slick-slide").each(function (index, item) {
-						var $item = $(item);
-						var $anchor = $item.find("a, button");
-						if($item.hasClass("slick-active")){
-							$anchor.attr("tabindex", "0").attr("aria-hidden", "false");
-						} else {
-							$anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
-						}
-					});
-				};
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
+                    });
+                }
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
-			$("#slideCarousel2").on({
-				init: function(event, slick){
-					updateTabindex();
-				}
-			, afterChange: function(event, slick, currentSlide){
-					updateTabindex();
-				}
-			});
+                if (device.isApp == true) {
+                    $('#slideCarousel2').on('init', function(event, slick){
+                        try {
+                            if(stGbCd == 20 || stGbCd == 30){
+                                window.secapp.setSecAppGnbTheme('BW');
+                            }else{
+                                window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
+                            }
+                        } catch (err) {
+                        }
+                    });
+                }
+                var ctarrow_5264755 = true;
+                var ctindi_5264755 = true;
+                if (device.val == 't' || device.val == 'p') {
+                    if ("001" != "001") {
+                        ctindi_5264755 = false;
+                    }
+                    if ("001" != "001") {
+                        ctarrow_5264755 = false;
+                    }
+                } else {
+                    if ("001" != "001") {
+                        ctindi_5264755 = false;
+                    }
+                    if ("002" != "001") {
+                        ctarrow_5264755 = false;
+                    }
+                }
 
-			vodCompoSlide('#slideCarousel2', 'type1', 3000, ctarrow_5264755, ctindi_5264755);
+                function updateTabindex(){
+                    $("#slideCarousel2 .slick-slide").each(function (index, item) {
+                        var $item = $(item);
+                        var $anchor = $item.find("a, button");
 
-				$(window).resize(function () {
-					ctarrow_5264755 = true;
-					ctindi_5264755 = true;
-					if (device.val == 't' || device.val == 'p') {
-						if ("001" != "001") {
-							ctindi_5264755 = false;
-						}
-						if ("001" != "001") {
-							ctarrow_5264755 = false;
-						}
-					} else {
-						if ("001" != "001") {
-							ctindi_5264755 = false;
-						}
-						if ("002" != "001") {
-							ctarrow_5264755 = false;
-						}
-					}
-				if (ctindi_5264755){
-					$('#slideCarousel2').parent().find('.slider-controls').removeClass('hide');
-				} else {
-					$('#slideCarousel2').parent().find('.slider-controls').addClass('hide');
-				}
-			});
+                        if($item.hasClass("slick-active")){
+                            $anchor.attr("tabindex", "0").attr("aria-hidden", "false");
+                        } else {
+                            $anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
+                        }
+                    });
+                };
 
-				$(function(){
-					$('#slideCarousel2').on({
-						afterChange : function(event, slick, currentSlide) {
-							var videoWrap = $(slick.$slides[currentSlide])[0];
-							if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
-								try {
-									if(stGbCd == 20 || stGbCd == 30){
-										window.secapp.setSecAppGnbTheme('BW');
-									}else{
-										window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
-									}
-								} catch (err) {
-								}
-							}
-						}
-					});
-					$("#slideCarousel2 .component-text button").on("click", function(){
-						$(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
-						$(this).closest(".component-text").removeAttr('onclick');
-					});
-					$("#slideCarousel2").find(".slider-controls .slick-dots li").each(function(item) {
-						if ($(this).find("span").is(":empty")) {
-							$(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
-						}
-					});
-				});
-			</script>
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
+                $("#slideCarousel2").on({
+                    init: function(event, slick){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
+                    }
+                , afterChange: function(event, slick, currentSlide){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
+                    }
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+
+                // KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
+                });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
+
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
+                if ($carousel.length) {
+                    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
+                    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
+                }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
+
+                vodCompoSlide('#slideCarousel2', 'type1', 3000, ctarrow_5264755, ctindi_5264755);
+
+                // KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
+                updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
+
+                $(window).resize(function () {
+                    ctarrow_5264755 = true;
+                    ctindi_5264755 = true;
+                    if (device.val == 't' || device.val == 'p') {
+                        if ("001" != "001") {
+                            ctindi_5264755 = false;
+                        }
+                        if ("001" != "001") {
+                            ctarrow_5264755 = false;
+                        }
+                    } else {
+                        if ("001" != "001") {
+                            ctindi_5264755 = false;
+                        }
+                        if ("002" != "001") {
+                            ctarrow_5264755 = false;
+                        }
+                    }
+
+                    if (ctindi_5264755){
+                        $('#slideCarousel2').parent().find('.slider-controls').removeClass('hide');
+                    } else {
+                        $('#slideCarousel2').parent().find('.slider-controls').addClass('hide');
+                    }
+
+                    // KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
+                    updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
+                });
+
+                $(function(){
+                    $('#slideCarousel2').on({
+                        afterChange : function(event, slick, currentSlide) {
+
+                            var videoWrap = $(slick.$slides[currentSlide])[0];
+
+                            if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
+                                try {
+                                    if(stGbCd == 20 || stGbCd == 30){
+                                        window.secapp.setSecAppGnbTheme('BW');
+                                    }else{
+                                        window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
+                                    }
+
+                                } catch (err) {
+                                }
+                            }
+                        }
+                    });
+                    
+                    //Cliackable KV 랜딩영역 수정 및 태깅 적용
+                    $("#slideCarousel2 .component-text button").on("click", function(){
+                        $(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
+                        $(this).closest(".component-text").removeAttr('onclick');
+                    });
+                    
+                    //웹 접근성 수정으로 인하여 추가함.-LDS
+                    $("#slideCarousel2").find(".slider-controls .slick-dots li").each(function(item) {
+                        if ($(this).find("span").is(":empty")) {
+                            $(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
+                        }
+                    });
+                });
+            
+                // 좌우 패딩 없애기
+                /*
+                var $vodSlider = $('.slider-carousel-visual.slick-initialized');
+                if ($vodSlider.length) {
+                    $vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
+                }
+                */
+
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
+                })($('#slideCarousel2'));
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
+            </script>
 		</div>
 		<!-- e : 컴포넌트1 -->
 
 		<!-- s : 컴포넌트2 (라인형태, ind-out) -->
 		<div class="wrap-component carousel-container new-component new-carousel-container pt-nrml pb-nrml w1440px">
-			<div class="component-contents pt-nrml pb-none gt-wrap type-video"
+			<div class="component-contents pt-nrml pb-none gt-wrap"
 				style="background-color: #fff"
 				data-cptnm="컴포넌트2 - 라인형태 ind-out">
 				<!-- s: slider-carousel-visual -->
@@ -1487,154 +1651,213 @@
 			</div>
 
 			<script>
-				if (device.isApp == true) {
-					$('#slideCarousel3').on('init', function(event, slick){
-						try {
-							if(stGbCd == 20 || stGbCd == 30){
-								window.secapp.setSecAppGnbTheme('BW');
-							}else{
-								window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
-							}
-						} catch (err) {
-						}
-					});
-				}
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
+                (function ($carousel) {
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
 
-				var ctarrow_5250994 = true;
-				var ctindi_5250994 = true;
-				if (device.val == 't' || device.val == 'p') {
-					if ("001" != "001") {
-						ctindi_5250994 = false;
-					}
-					if ("001" != "001") {
-						ctarrow_5250994 = false;
-					}
-				} else {
-					if ("001" != "001") {
-						ctindi_5250994 = false;
-					}
-					if ("002" != "001") {
-						ctarrow_5250994 = false;
-					}
-				}
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
+                var controlsFrame = null;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
+                    controlsFrame = requestAnimationFrame(function () {
+                        controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
+                        if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                        var slick = $carousel.slick('getSlick');
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
+                        var controls = $carousel.siblings('.slider-controls')[0];
+                        var parent = controls && controls.offsetParent;
+                        if (!visual || !controls || !parent ||
+                            !visual.getClientRects().length || !controls.getClientRects().length ||
+                            !parent.getClientRects().length) return;
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+                        var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                        var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
 
-				function updateTabindex(){
-					$("#slideCarousel3 .slick-slide").each(function (index, item) {
-						var $item = $(item);
-						var $anchor = $item.find("a, button");
-						if($item.hasClass("slick-active")){
-							$anchor.attr("tabindex", "0").attr("aria-hidden", "false");
-						} else {
-							$anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
-						}
-					});
-				};
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
+                    });
+                }
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
-			$("#slideCarousel3").on({
-				init: function(event, slick){
-					updateTabindex();
-				}
-			, afterChange: function(event, slick, currentSlide){
-					updateTabindex();
-				}
-			});
+                if (device.isApp == true) {
+                    $('#slideCarousel3').on('init', function(event, slick){
+                        try {
+                            if(stGbCd == 20 || stGbCd == 30){
+                                window.secapp.setSecAppGnbTheme('BW');
+                            }else{
+                                window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
+                            }
+                        } catch (err) {
+                        }
+                    });
+                }
 
-			vodCompoSlide('#slideCarousel3', 'type1', 3000, ctarrow_5250994, ctindi_5250994);
+                var ctarrow_5250994 = true;
+                var ctindi_5250994 = true;
+                if (device.val == 't' || device.val == 'p') {
+                    if ("001" != "001") {
+                        ctindi_5250994 = false;
+                    }
+                    if ("001" != "001") {
+                        ctarrow_5250994 = false;
+                    }
+                } else {
+                    if ("001" != "001") {
+                        ctindi_5250994 = false;
+                    }
+                    if ("002" != "001") {
+                        ctarrow_5250994 = false;
+                    }
+                }
 
-				$(window).resize(function () {
-					ctarrow_5250994 = true;
-					ctindi_5250994 = true;
-					if (device.val == 't' || device.val == 'p') {
-						if ("001" != "001") {
-							ctindi_5250994 = false;
-						}
-						if ("001" != "001") {
-							ctarrow_5250994 = false;
-						}
-					} else {
-						if ("001" != "001") {
-							ctindi_5250994 = false;
-						}
-						if ("002" != "001") {
-							ctarrow_5250994 = false;
-						}
-					}
-				if (ctindi_5250994){
-					$('#slideCarousel3').parent().find('.slider-controls').removeClass('hide');
-				} else {
-					$('#slideCarousel3').parent().find('.slider-controls').addClass('hide');
-				}
-			});
+                function updateTabindex(){
+                    $("#slideCarousel3 .slick-slide").each(function (index, item) {
+                        var $item = $(item);
+                        var $anchor = $item.find("a, button");
 
-				$(function(){
-					$('#slideCarousel3').on({
-						afterChange : function(event, slick, currentSlide) {
-							var videoWrap = $(slick.$slides[currentSlide])[0];
-							if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
-								try {
-									if(stGbCd == 20 || stGbCd == 30){
-										window.secapp.setSecAppGnbTheme('BW');
-									}else{
-										window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
-									}
-								} catch (err) {
-								}
-							}
-						}
-					});
-					$("#slideCarousel3 .component-text button").on("click", function(){
-						$(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
-						$(this).closest(".component-text").removeAttr('onclick');
-					});
-					$("#slideCarousel3").find(".slider-controls .slick-dots li").each(function(item) {
-						if ($(this).find("span").is(":empty")) {
-							$(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
-						}
-					});
-				});
-			</script>
-			<!-- s: ind-in -->
-			<script>
-				(function ($slider) {
-					var frame = null;
-					function update() {
-						if (frame || !$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
-						frame = requestAnimationFrame(function () {
-							frame = null;
-							if (!$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
-							var slick = $slider.slick('getSlick');
-							var visual = slick.$slides[slick.currentSlide];
-							var controls = $slider.siblings('.slider-controls')[0];
-							var parent = controls && controls.offsetParent;
-							if (!visual || !controls || !parent ||
-								!visual.getClientRects().length || !controls.getClientRects().length ||
-								!parent.getClientRects().length) return;
-							var visualRect = visual.getBoundingClientRect();
-							if (!visualRect.height) return;
-							var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
-							var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
-							// 기준 높이 800, 현재 .visual 높이 600(상단 동일), 마진 0이면 bottom 266; 높이 800이면 66.
-							controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
-						});
-					}
-					$slider.on('init.indInVisualControls afterChange.indInVisualControls setPosition.indInVisualControls reInit.indInVisualControls', update);
-					window.addEventListener('resize', update);
-					$slider[0].addEventListener('load', update, true);
-					$slider[0].addEventListener('loadedmetadata', update, true);
-					update(); // 기존 초기화가 이미 끝난 상태도 적용
-				})($('#slideCarousel3'));
-			</script>
-        	<!-- e: ind-in -->
+                        if($item.hasClass("slick-active")){
+                            $anchor.attr("tabindex", "0").attr("aria-hidden", "false");
+                        } else {
+                            $anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
+                        }
+                    });
+                };
+
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
+                $("#slideCarousel3").on({
+                    init: function(event, slick){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
+                    }
+                , afterChange: function(event, slick, currentSlide){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
+                    }
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+
+                // KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
+                });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
+
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
+                if ($carousel.length) {
+                    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
+                    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
+                }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
+
+                vodCompoSlide('#slideCarousel3', 'type1', 3000, ctarrow_5250994, ctindi_5250994);
+
+                // KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
+                updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
+
+                $(window).resize(function () {
+                    ctarrow_5250994 = true;
+                    ctindi_5250994 = true;
+                    if (device.val == 't' || device.val == 'p') {
+                        if ("001" != "001") {
+                            ctindi_5250994 = false;
+                        }
+                        if ("001" != "001") {
+                            ctarrow_5250994 = false;
+                        }
+                    } else {
+                        if ("001" != "001") {
+                            ctindi_5250994 = false;
+                        }
+                        if ("002" != "001") {
+                            ctarrow_5250994 = false;
+                        }
+                    }
+
+                    if (ctindi_5250994){
+                        $('#slideCarousel3').parent().find('.slider-controls').removeClass('hide');
+                    } else {
+                        $('#slideCarousel3').parent().find('.slider-controls').addClass('hide');
+                    }
+
+                    // KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
+                    updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
+                });
+
+                $(function(){
+                    $('#slideCarousel3').on({
+                        afterChange : function(event, slick, currentSlide) {
+
+                            var videoWrap = $(slick.$slides[currentSlide])[0];
+
+                            if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
+                                try {
+                                    if(stGbCd == 20 || stGbCd == 30){
+                                        window.secapp.setSecAppGnbTheme('BW');
+                                    }else{
+                                        window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
+                                    }
+
+                                } catch (err) {
+                                }
+                            }
+                        }
+                    });
+                    
+                    //Cliackable KV 랜딩영역 수정 및 태깅 적용
+                    $("#slideCarousel3 .component-text button").on("click", function(){
+                        $(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
+                        $(this).closest(".component-text").removeAttr('onclick');
+                    });
+                    
+                    //웹 접근성 수정으로 인하여 추가함.-LDS
+                    $("#slideCarousel3").find(".slider-controls .slick-dots li").each(function(item) {
+                        if ($(this).find("span").is(":empty")) {
+                            $(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
+                        }
+                    });
+                });
+            
+                // 좌우 패딩 없애기
+                /*
+                var $vodSlider = $('.slider-carousel-visual.slick-initialized');
+                if ($vodSlider.length) {
+                    $vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
+                }
+                */
+
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
+                })($('#slideCarousel3'));
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
+            </script>
 		</div>
 		<!-- e : 컴포넌트2 -->
 
 		<!-- s : 컴포넌트3 (ind-in, data-control wht) -->
 		<div class="wrap-component carousel-container new-component new-carousel-container pt-nrml pb-nrml w1440px">
-			<div class="component-contents pt-nrml pb-none gt-wrap type-video"
+			<div class="component-contents pt-nrml pb-none gt-wrap"
 				style="background-color: #fff"
 				data-cptnm="컴포넌트3 - ind-in, control wht">
 				<!-- s: slider-carousel-visual -->
-				<div class="slider-carousel-visual gt-slide ind-in ind-dot arr-circle s3000"
+				<div class="slider-carousel-visual gt-slide ind-in ind-line arr-line s3000"
 					id="slideCarousel4"
 					data-indcthemeclassnm="ind-dot"
 					data-indcthememclassnm="ind-dot">
@@ -1760,112 +1983,203 @@
 			</div>
 
 			<script>
-				if (device.isApp == true) {
-					$('#slideCarousel4').on('init', function(event, slick){
-						try {
-							if(stGbCd == 20 || stGbCd == 30){
-								window.secapp.setSecAppGnbTheme('BW');
-							}else{
-								window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
-							}
-						} catch (err) {
-						}
-					});
-				}
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
+                (function ($carousel) {
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
 
-				var ctarrow_5250995 = true;
-				var ctindi_5250995 = true;
-				if (device.val == 't' || device.val == 'p') {
-					if ("001" != "001") {
-						ctindi_5250995 = false;
-					}
-					if ("001" != "001") {
-						ctarrow_5250995 = false;
-					}
-				} else {
-					if ("001" != "001") {
-						ctindi_5250995 = false;
-					}
-					if ("002" != "001") {
-						ctarrow_5250995 = false;
-					}
-				}
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
+                var controlsFrame = null;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
+                    controlsFrame = requestAnimationFrame(function () {
+                        controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
+                        if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                        var slick = $carousel.slick('getSlick');
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
+                        var controls = $carousel.siblings('.slider-controls')[0];
+                        var parent = controls && controls.offsetParent;
+                        if (!visual || !controls || !parent ||
+                            !visual.getClientRects().length || !controls.getClientRects().length ||
+                            !parent.getClientRects().length) return;
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+                        var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                        var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
 
-				function updateTabindex(){
-					$("#slideCarousel4 .slick-slide").each(function (index, item) {
-						var $item = $(item);
-						var $anchor = $item.find("a, button");
-						if($item.hasClass("slick-active")){
-							$anchor.attr("tabindex", "0").attr("aria-hidden", "false");
-						} else {
-							$anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
-						}
-					});
-				};
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
+                    });
+                }
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
-			$("#slideCarousel4").on({
-				init: function(event, slick){
-					updateTabindex();
-				}
-			, afterChange: function(event, slick, currentSlide){
-					updateTabindex();
-				}
-			});
+                if (device.isApp == true) {
+                    $('#slideCarousel4').on('init', function(event, slick){
+                        try {
+                            if(stGbCd == 20 || stGbCd == 30){
+                                window.secapp.setSecAppGnbTheme('BW');
+                            }else{
+                                window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
+                            }
+                        } catch (err) {
+                        }
+                    });
+                }
 
-			vodCompoSlide('#slideCarousel4', 'type1', 3000, ctarrow_5250995, ctindi_5250995);
+                var ctarrow_5250995 = true;
+                var ctindi_5250995 = true;
+                if (device.val == 't' || device.val == 'p') {
+                    if ("001" != "001") {
+                        ctindi_5250995 = false;
+                    }
+                    if ("001" != "001") {
+                        ctarrow_5250995 = false;
+                    }
+                } else {
+                    if ("001" != "001") {
+                        ctindi_5250995 = false;
+                    }
+                    if ("002" != "001") {
+                        ctarrow_5250995 = false;
+                    }
+                }
 
-				$(window).resize(function () {
-					ctarrow_5250995 = true;
-					ctindi_5250995 = true;
-					if (device.val == 't' || device.val == 'p') {
-						if ("001" != "001") {
-							ctindi_5250995 = false;
-						}
-						if ("001" != "001") {
-							ctarrow_5250995 = false;
-						}
-					} else {
-						if ("001" != "001") {
-							ctindi_5250995 = false;
-						}
-						if ("002" != "001") {
-							ctarrow_5250995 = false;
-						}
-					}
-				if (ctindi_5250995){
-					$('#slideCarousel4').parent().find('.slider-controls').removeClass('hide');
-				} else {
-					$('#slideCarousel4').parent().find('.slider-controls').addClass('hide');
-				}
-			});
+                function updateTabindex(){
+                    $("#slideCarousel4 .slick-slide").each(function (index, item) {
+                        var $item = $(item);
+                        var $anchor = $item.find("a, button");
 
-				$(function(){
-					$('#slideCarousel4').on({
-						afterChange : function(event, slick, currentSlide) {
-							var videoWrap = $(slick.$slides[currentSlide])[0];
-							if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
-								try {
-									if(stGbCd == 20 || stGbCd == 30){
-										window.secapp.setSecAppGnbTheme('BW');
-									}else{
-										window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
-									}
-								} catch (err) {
-								}
-							}
-						}
-					});
-					$("#slideCarousel4 .component-text button").on("click", function(){
-						$(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
-						$(this).closest(".component-text").removeAttr('onclick');
-					});
-					$("#slideCarousel4").find(".slider-controls .slick-dots li").each(function(item) {
-						if ($(this).find("span").is(":empty")) {
-							$(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
-						}
-					});
-				});
-			</script>
+                        if($item.hasClass("slick-active")){
+                            $anchor.attr("tabindex", "0").attr("aria-hidden", "false");
+                        } else {
+                            $anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
+                        }
+                    });
+                };
+
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
+                $("#slideCarousel4").on({
+                    init: function(event, slick){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
+                    }
+                , afterChange: function(event, slick, currentSlide){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
+                    }
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+
+                // KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
+                });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
+
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
+                if ($carousel.length) {
+                    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
+                    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
+                }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
+
+                vodCompoSlide('#slideCarousel4', 'type1', 3000, ctarrow_5250995, ctindi_5250995);
+
+                // KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
+                updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
+
+                $(window).resize(function () {
+                    ctarrow_5250995 = true;
+                    ctindi_5250995 = true;
+                    if (device.val == 't' || device.val == 'p') {
+                        if ("001" != "001") {
+                            ctindi_5250995 = false;
+                        }
+                        if ("001" != "001") {
+                            ctarrow_5250995 = false;
+                        }
+                    } else {
+                        if ("001" != "001") {
+                            ctindi_5250995 = false;
+                        }
+                        if ("002" != "001") {
+                            ctarrow_5250995 = false;
+                        }
+                    }
+
+                    if (ctindi_5250995){
+                        $('#slideCarousel4').parent().find('.slider-controls').removeClass('hide');
+                    } else {
+                        $('#slideCarousel4').parent().find('.slider-controls').addClass('hide');
+                    }
+
+                    // KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
+                    updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
+                });
+
+                $(function(){
+                    $('#slideCarousel4').on({
+                        afterChange : function(event, slick, currentSlide) {
+
+                            var videoWrap = $(slick.$slides[currentSlide])[0];
+
+                            if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
+                                try {
+                                    if(stGbCd == 20 || stGbCd == 30){
+                                        window.secapp.setSecAppGnbTheme('BW');
+                                    }else{
+                                        window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
+                                    }
+
+                                } catch (err) {
+                                }
+                            }
+                        }
+                    });
+                    
+                    //Cliackable KV 랜딩영역 수정 및 태깅 적용
+                    $("#slideCarousel4 .component-text button").on("click", function(){
+                        $(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
+                        $(this).closest(".component-text").removeAttr('onclick');
+                    });
+                    
+                    //웹 접근성 수정으로 인하여 추가함.-LDS
+                    $("#slideCarousel4").find(".slider-controls .slick-dots li").each(function(item) {
+                        if ($(this).find("span").is(":empty")) {
+                            $(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
+                        }
+                    });
+                });
+            
+                // 좌우 패딩 없애기
+                /*
+                var $vodSlider = $('.slider-carousel-visual.slick-initialized');
+                if ($vodSlider.length) {
+                    $vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
+                }
+                */
+
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
+                })($('#slideCarousel4'));
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
+            </script>
 		</div>
 		<!-- e : 컴포넌트3 -->
 
@@ -1879,107 +2193,82 @@
 					id="slideCarousel5"
 					data-indcthemeclassnm="ind-dot"
 					data-indcthememclassnm="ind-dot">
+
 					<!-- loop -->
-					<div class="visual"
-						data-arrow="wht"
+					<div class="visual "
 						data-control="wht"
-						data-ind-title="Brightcove Video 1"
+						data-arrow="wht"
+						data-ind-title=""
 					>
-						<div class="component-text txt-mid-center txtm-bottom-center">
-							<div class="component-text-inner">
-								<div class="box-title offerVer">
-									<h2 class="sub above mo-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="sub above pc-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="title mo-ver " style="color:#000000">Brightcove Video 1</h2>
-									<h2 class="title pc-ver " style="color:#000000">Brightcove Video 1</h2>
-									<h2 class="sub below mo-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<h2 class="sub below pc-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<p class="desc mo-ver " style="color:#000000">Video ID: 6385649758112</p>
-									<p class="desc pc-ver " style="color:#000000">Video ID: 6385649758112</p>
-								</div>
-							</div>
-						</div>
+						<script type="application/ld+json" data-type="seo" data-object-type="VideoObject" data-id="0">{"@context":"https://schema.org","@type":"VideoObject","uploadDate":"2026-11-05T11:06:06.000+0900","datePublished":"2026-11-05T11:06:06.000+0900","dateModified":"2026-11-05T13:49:44.000+0900","name":"Video English Title","description":"Video Description (SEO)*","thumbnailUrl":"https://images.samsung.com/kdp/cms_contents/624394/fe6c613b-1010-46f6-8ce2-9e6fe5b290ce.png?$ORIGIN_JPG$","embedUrl":"https://players.brightcove.net/923136708001/default_default/index.html?videoId=6385649758112","duration":"PT1H","keywords":["Video Keywords"],"inLanguage":"ko-KR","publisher":{"@id":"https://www.samsung.com/sec/#org","@type":"Organization","name":"Samsung","logo":{"@type":"ImageObject","url":"https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-common/resources/images/logo-square-letter.png"}}}</script>
 						<!-- s:visual-area -->
 						<div class="visual-area vdoDim">
+							<!-- AutoPlay상태가 아니면 컨틀롤 버튼 생성(embed만 autoplay가능) -->
 							<!-- embed용 영상play -->
-							<div class="video" data-id="video_5250996_0_vod" data-src="6385649758112" data-type="brightcove"
-								data-auto="true"
-								data-omni="BRIGHTCOVE_1:Video English Title_play video">
+							<div class="video" data-id="video_5264757_0_vod" data-src="6385649758112" data-type="bc"
+								data-auto="true" 
+								data-omni="brightcove video_1:Video English Title_play video">
 								<div class="target"></div>
 							</div>
+
 							<article class="box-article blind">
 								<div class="alt-content">Video Description (Alt Text)*</div>
 							</article>
+							<!-- endif : bundle.visualType == "video" -->
 						</div>
 						<!-- e: visual-area -->
+
+						<!-- s : component-text -->
+						<div class="component-text txt-top-left txtm-top-left">
+							<div class="component-text-inner " style="cursor:default;">
+								<div class="box-title offerVer">
+									<h2 class="sub above mo-ver " style="color:#000000"></h2>
+									<h2 class="sub above pc-ver " style="color:#000000"></h2>
+									<h2 class="title pc-ver " style="color:#000000">brightcove video</h2>
+									<h2 class="title mo-ver " style="color:#000000">brightcove video</h2>
+									<p class="desc mo-ver " style="color:#000000"></p>
+									<p class="desc pc-ver " style="color:#000000"></p>
+								</div>
+							</div>
+						</div>
+						<!-- e : component-text  -->
 					</div>
 
-					<div class="visual"
-						data-arrow="wht"
+					<div class="visual "
 						data-control="wht"
-						data-ind-title="Brightcove Video 2"
+						data-arrow="wht"
+						data-ind-title=""
 					>
-						<div class="component-text txt-mid-center txtm-bottom-center">
-							<div class="component-text-inner">
-								<div class="box-title offerVer">
-									<h2 class="sub above mo-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="sub above pc-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="title mo-ver " style="color:#000000">Brightcove Video 2</h2>
-									<h2 class="title pc-ver " style="color:#000000">Brightcove Video 2</h2>
-									<h2 class="sub below mo-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<h2 class="sub below pc-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<p class="desc mo-ver " style="color:#000000">Video ID: 6385649659112</p>
-									<p class="desc pc-ver " style="color:#000000">Video ID: 6385649659112</p>
-								</div>
-							</div>
-						</div>
-						<!-- s:visual-area -->
+						<script type="application/ld+json" data-type="seo" data-object-type="VideoObject" data-id="0">{"@context":"https://schema.org","@type":"VideoObject","uploadDate":"2026-11-05T11:06:06.000+0900","datePublished":"2026-11-05T11:06:06.000+0900","dateModified":"2026-11-05T13:49:44.000+0900","name":"Video English Title","description":"Video Description (SEO)*","thumbnailUrl":"https://images.samsung.com/kdp/cms_contents/624394/e0dae331-b67f-40a9-9902-dab970d68239.png?$ORIGIN_JPG$","embedUrl":"https://players.brightcove.net/923136708001/default_default/index.html?videoId=6385649659112","duration":"PT1H","keywords":["Video Keywords"],"inLanguage":"ko-KR","publisher":{"@id":"https://www.samsung.com/sec/#org","@type":"Organization","name":"Samsung","logo":{"@type":"ImageObject","url":"https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-common/resources/images/logo-square-letter.png"}}}</script>						<!-- s:visual-area -->
 						<div class="visual-area vdoDim">
+							<!-- AutoPlay상태가 아니면 컨틀롤 버튼 생성(embed만 autoplay가능) -->
 							<!-- embed용 영상play -->
-							<div class="video" data-id="video_5250996_1_vod" data-src="6385649659112" data-type="brightcove"
-								data-auto="true"
-								data-omni="BRIGHTCOVE_2:Video English Title_play video">
+							<div class="video" data-id="video_5264757_1_vod" data-src="6385649659112" data-type="bc"
+								data-auto="true" 
+								data-omni="brightcove video_2:Video English Title_play video">
 								<div class="target"></div>
 							</div>
 							<article class="box-article blind">
 								<div class="alt-content">Video Description (Alt Text)*</div>
 							</article>
+							<!-- endif : bundle.visualType == "video" -->
 						</div>
 						<!-- e: visual-area -->
-					</div>
 
-					<div class="visual"
-						data-arrow="wht"
-						data-control="wht"
-						data-ind-title="Brightcove Video 3"
-					>
-						<div class="component-text txt-mid-center txtm-bottom-center">
-							<div class="component-text-inner">
+						<!-- s : component-text -->
+						<div class="component-text txt-top-left txtm-top-left">
+							<div class="component-text-inner " style="cursor:default;">
 								<div class="box-title offerVer">
-									<h2 class="sub above mo-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="sub above pc-ver " style="color:#000000">Sub HeadLine (above)</h2>
-									<h2 class="title mo-ver " style="color:#000000">Brightcove Video 3</h2>
-									<h2 class="title pc-ver " style="color:#000000">Brightcove Video 3</h2>
-									<h2 class="sub below mo-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<h2 class="sub below pc-ver " style="color:#000000">브라이트코브 비디오 재생</h2>
-									<p class="desc mo-ver " style="color:#000000">Video ID: 6385647620112</p>
-									<p class="desc pc-ver " style="color:#000000">Video ID: 6385647620112</p>
+									<h2 class="sub above mo-ver " style="color:#000000"></h2>
+									<h2 class="sub above pc-ver " style="color:#000000"></h2>
+									<h2 class="title pc-ver " style="color:#000000">brightcove video</h2>
+									<h2 class="title mo-ver " style="color:#000000">brightcove video</h2>
+									<p class="desc mo-ver " style="color:#000000"></p>
+									<p class="desc pc-ver " style="color:#000000"></p>
 								</div>
 							</div>
 						</div>
-						<!-- s:visual-area -->
-						<div class="visual-area vdoDim">
-							<!-- embed용 영상play -->
-							<div class="video" data-id="video_5250996_2_vod" data-src="6385647620112" data-type="brightcove"
-								data-auto="true"
-								data-omni="BRIGHTCOVE_3:Video English Title_play video">
-								<div class="target"></div>
-							</div>
-							<article class="box-article blind">
-								<div class="alt-content">Video Description (Alt Text)*</div>
-							</article>
-						</div>
-						<!-- e: visual-area -->
+						<!-- e : component-text  -->
 					</div>
 					<!-- loop -->
 				</div>
@@ -1994,112 +2283,203 @@
 			</div>
 
 			<script>
-				if (device.isApp == true) {
-					$('#slideCarousel5').on('init', function(event, slick){
-						try {
-							if(stGbCd == 20 || stGbCd == 30){
-								window.secapp.setSecAppGnbTheme('BW');
-							}else{
-								window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
-							}
-						} catch (err) {
-						}
-					});
-				}
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 (상태와 함수명 충돌 방지).
+                (function ($carousel) {
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 열기.
 
-				var ctarrow_5250996 = true;
-				var ctindi_5250996 = true;
-				if (device.val == 't' || device.val == 'p') {
-					if ("001" != "001") {
-						ctindi_5250996 = false;
-					}
-					if ("001" != "001") {
-						ctarrow_5250996 = false;
-					}
-				} else {
-					if ("001" != "001") {
-						ctindi_5250996 = false;
-					}
-					if ("002" != "001") {
-						ctarrow_5250996 = false;
-					}
-				}
+                // KDP-123706 | 스크립트 추가 시작: ind-in 컨트롤 위치 보정 (다섯 컴포넌트에 동일 적용, ind-out은 건너뜀).
+                var controlsFrame = null;
+                var controlsNextSlide = null;
+                function updateSliderControlsBottom(nextSlide) {
+                    if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                    if (typeof nextSlide === 'number') controlsNextSlide = nextSlide;
+                    if (controlsFrame !== null) return;
+                    controlsFrame = requestAnimationFrame(function () {
+                        controlsFrame = null;
+                        var targetIndex = controlsNextSlide;
+                        controlsNextSlide = null;
+                        if (!$carousel.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+                        var slick = $carousel.slick('getSlick');
+                        if (!slick || slick.unslicked || !slick.$slides) return;
+                        var visual = slick.$slides[targetIndex === null ? slick.currentSlide : targetIndex];
+                        var controls = $carousel.siblings('.slider-controls')[0];
+                        var parent = controls && controls.offsetParent;
+                        if (!visual || !controls || !parent ||
+                            !visual.getClientRects().length || !controls.getClientRects().length ||
+                            !parent.getClientRects().length) return;
+                        var visualRect = visual.getBoundingClientRect();
+                        if (!visualRect.height) return;
+                        var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+                        var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
 
-				function updateTabindex(){
-					$("#slideCarousel5 .slick-slide").each(function (index, item) {
-						var $item = $(item);
-						var $anchor = $item.find("a, button");
-						if($item.hasClass("slick-active")){
-							$anchor.attr("tabindex", "0").attr("aria-hidden", "false");
-						} else {
-							$anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
-						}
-					});
-				};
+                        // KDP-123706 | 스크립트 추가: 66px은 활성 .visual 하단에서 컨트롤 하단까지 위쪽 간격.
+                        var bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+                        if (controls.style.bottom !== bottom) controls.style.bottom = bottom;
+                        if (slick.animating) updateSliderControlsBottom();
+                    });
+                }
+                // KDP-123706 | 스크립트 추가 끝: ind-in 컨트롤 위치 보정.
 
-			$("#slideCarousel5").on({
-				init: function(event, slick){
-					updateTabindex();
-				}
-			, afterChange: function(event, slick, currentSlide){
-					updateTabindex();
-				}
-			});
+                if (device.isApp == true) {
+                    $('#slideCarousel5').on('init', function(event, slick){
+                        try {
+                            if(stGbCd == 20 || stGbCd == 30){
+                                window.secapp.setSecAppGnbTheme('BW');
+                            }else{
+                                window.secapp.setSecAppGnbTheme(slick.$slides[0].dataset.control);
+                            }
+                        } catch (err) {
+                        }
+                    });
+                }
 
-			vodCompoSlide('#slideCarousel5', 'type1', 3000, ctarrow_5250996, ctindi_5250996);
+                var ctarrow_5250996 = true;
+                var ctindi_5250996 = true;
+                if (device.val == 't' || device.val == 'p') {
+                    if ("001" != "001") {
+                        ctindi_5250996 = false;
+                    }
+                    if ("001" != "001") {
+                        ctarrow_5250996 = false;
+                    }
+                } else {
+                    if ("001" != "001") {
+                        ctindi_5250996 = false;
+                    }
+                    if ("002" != "001") {
+                        ctarrow_5250996 = false;
+                    }
+                }
 
-				$(window).resize(function () {
-					ctarrow_5250996 = true;
-					ctindi_5250996 = true;
-					if (device.val == 't' || device.val == 'p') {
-						if ("001" != "001") {
-							ctindi_5250996 = false;
-						}
-						if ("001" != "001") {
-							ctarrow_5250996 = false;
-						}
-					} else {
-						if ("001" != "001") {
-							ctindi_5250996 = false;
-						}
-						if ("002" != "001") {
-							ctarrow_5250996 = false;
-						}
-					}
-				if (ctindi_5250996){
-					$('#slideCarousel5').parent().find('.slider-controls').removeClass('hide');
-				} else {
-					$('#slideCarousel5').parent().find('.slider-controls').addClass('hide');
-				}
-			});
+                function updateTabindex(){
+                    $("#slideCarousel5 .slick-slide").each(function (index, item) {
+                        var $item = $(item);
+                        var $anchor = $item.find("a, button");
 
-				$(function(){
-					$('#slideCarousel5').on({
-						afterChange : function(event, slick, currentSlide) {
-							var videoWrap = $(slick.$slides[currentSlide])[0];
-							if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
-								try {
-									if(stGbCd == 20 || stGbCd == 30){
-										window.secapp.setSecAppGnbTheme('BW');
-									}else{
-										window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
-									}
-								} catch (err) {
-								}
-							}
-						}
-					});
-					$("#slideCarousel5 .component-text button").on("click", function(){
-						$(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
-						$(this).closest(".component-text").removeAttr('onclick');
-					});
-					$("#slideCarousel5").find(".slider-controls .slick-dots li").each(function(item) {
-						if ($(this).find("span").is(":empty")) {
-							$(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
-						}
-					});
-				});
-			</script>
+                        if($item.hasClass("slick-active")){
+                            $anchor.attr("tabindex", "0").attr("aria-hidden", "false");
+                        } else {
+                            $anchor.attr("tabindex", "-1").attr("aria-hidden", "true");
+                        }
+                    });
+                };
+
+                // KDP-123706 | 스크립트 수정 시작: Slick 이벤트 연결 (원본 init/afterChange 유지).
+                $("#slideCarousel5").on({
+                    init: function(event, slick){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: init 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: init 위치 갱신.
+                    }
+                , afterChange: function(event, slick, currentSlide){
+                        updateTabindex();
+                        // KDP-123706 | 스크립트 추가 시작: afterChange 위치 갱신.
+
+                        updateSliderControlsBottom();
+                        // KDP-123706 | 스크립트 추가 끝: afterChange 위치 갱신.
+                    }
+                // KDP-123706 | 스크립트 추가 시작: 전환 대상 선반영과 레이아웃/재초기화 갱신.
+                , beforeChange: function(event, slick, currentSlide, nextSlide) {
+                    updateSliderControlsBottom(nextSlide);
+                }
+                , setPosition: updateSliderControlsBottom
+                , reInit: updateSliderControlsBottom
+
+                // KDP-123706 | 스크립트 추가 끝: Slick 보정 이벤트.
+                });
+                // KDP-123706 | 스크립트 수정 끝: Slick 이벤트 연결.
+
+                // KDP-123706 | 스크립트 추가 시작: 이 컴포넌트의 미디어 로드 캡처.
+                if ($carousel.length) {
+                    $carousel[0].addEventListener('load', updateSliderControlsBottom, true);
+                    $carousel[0].addEventListener('loadedmetadata', updateSliderControlsBottom, true);
+                }
+                // KDP-123706 | 스크립트 추가 끝: 미디어 로드 캡처.
+
+                vodCompoSlide('#slideCarousel5', 'type1', 3000, ctarrow_5250996, ctindi_5250996);
+
+                // KDP-123706 | 스크립트 추가 시작: 기존 초기화 직후 위치 갱신.
+                updateSliderControlsBottom();
+                // KDP-123706 | 스크립트 추가 끝: 기존 초기화 직후 위치 갱신.
+
+                $(window).resize(function () {
+                    ctarrow_5250996 = true;
+                    ctindi_5250996 = true;
+                    if (device.val == 't' || device.val == 'p') {
+                        if ("001" != "001") {
+                            ctindi_5250996 = false;
+                        }
+                        if ("001" != "001") {
+                            ctarrow_5250996 = false;
+                        }
+                    } else {
+                        if ("001" != "001") {
+                            ctindi_5250996 = false;
+                        }
+                        if ("002" != "001") {
+                            ctarrow_5250996 = false;
+                        }
+                    }
+
+                    if (ctindi_5250996){
+                        $('#slideCarousel5').parent().find('.slider-controls').removeClass('hide');
+                    } else {
+                        $('#slideCarousel5').parent().find('.slider-controls').addClass('hide');
+                    }
+
+                    // KDP-123706 | 스크립트 추가 시작: 기존 resize 처리 후 위치 갱신.
+                    updateSliderControlsBottom();
+                    // KDP-123706 | 스크립트 추가 끝: resize 위치 갱신.
+                });
+
+                $(function(){
+                    $('#slideCarousel5').on({
+                        afterChange : function(event, slick, currentSlide) {
+
+                            var videoWrap = $(slick.$slides[currentSlide])[0];
+
+                            if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
+                                try {
+                                    if(stGbCd == 20 || stGbCd == 30){
+                                        window.secapp.setSecAppGnbTheme('BW');
+                                    }else{
+                                        window.secapp.setSecAppGnbTheme(videoWrap.dataset.control);
+                                    }
+
+                                } catch (err) {
+                                }
+                            }
+                        }
+                    });
+                    
+                    //Cliackable KV 랜딩영역 수정 및 태깅 적용
+                    $("#slideCarousel5 .component-text button").on("click", function(){
+                        $(this).closest(".clickable_dual>.component-text-inner").removeAttr('onclick');
+                        $(this).closest(".component-text").removeAttr('onclick');
+                    });
+                    
+                    //웹 접근성 수정으로 인하여 추가함.-LDS
+                    $("#slideCarousel5").find(".slider-controls .slick-dots li").each(function(item) {
+                        if ($(this).find("span").is(":empty")) {
+                            $(this).find("span").addClass("blind").text((item + 1) + "번째 슬라이드");
+                        }
+                    });
+                });
+            
+                // 좌우 패딩 없애기
+                /*
+                var $vodSlider = $('.slider-carousel-visual.slick-initialized');
+                if ($vodSlider.length) {
+                    $vodSlider.slick('slickSetOption', 'centerPadding', 0, true);
+                }
+                */
+
+                // KDP-123706 | 스크립트 추가 시작: 컴포넌트별 실행 범위 닫기.
+                })($('#slideCarousel5'));
+                // KDP-123706 | 스크립트 추가 끝: 컴포넌트별 실행 범위 닫기.
+            </script>
 		</div>
 		<!-- e : 컴포넌트4 -->
     </div>
