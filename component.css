@@ -7176,7 +7176,9 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 
 /* KDP-123706 */
 .wrap-component.carousel-container.new-carousel-container .component-contents {height:auto;}
-.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider {height:100%;min-height:640px;}
+/* KDP-123706 | CSS 수정 시작: 루트 최소 높이 해제. */
+.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider {height:auto;min-height:0;}
+/* KDP-123706 | CSS 수정 끝: 루트 최소 높이 해제. */
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-arrow {width:56px;height:56px;transition:top .1s;box-shadow:none;background-color:transparent;background-repeat:no-repeat;background-position:50% 50%;background-size: cover;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-arrow.slick-prev {left:0;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-arrow.slick-next {right:0;}
@@ -7201,14 +7203,20 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-dot .slick-dots li ~ li,
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-dot ~ .slider-controls .slick-dots li,
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-dot ~ .slider-controls .slick-dots li ~ li {margin:0;}
-.wrap-component.carousel-container.new-carousel-container .component-contents .slick-list {height:100%;}
-.wrap-component.carousel-container.new-carousel-container .component-contents .slick-track {display:flex;align-items:flex-start;min-height:0;}
+/* KDP-123706 | CSS 수정 시작: Slick 인라인 리스트 높이 사용. */
+.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-list {height:auto;}
+/* KDP-123706 | CSS 수정 끝: Slick 인라인 리스트 높이 사용. */
+/* KDP-123706 | CSS 수정 시작: 트랙과 원래 슬라이드 높이 유지. */
+.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-track {height:auto;display:flex;align-items:flex-start;min-height:0;}
+/* KDP-123706 | CSS 수정 끝: 트랙과 원래 슬라이드 높이 유지. */
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slide.visual {display:grid;grid-template-columns: minmax(0,1fr);grid-template-rows:auto auto auto;grid-template-areas:"title" "image" "disc";gap:0;align-content:start;height:auto;min-height:0;will-change:opacity;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls {margin-top:50px;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls .slide-btn {margin-left:0;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls .slide-btn.slide-play,
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls .slide-btn.slide-pause {width:16px;height:16px;background-size:cover;}
-.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-in ~ .slider-controls {margin:0;bottom:66px;transition:bottom ease-in-out .5s;will-change:bottom;}
+/* KDP-123706 | CSS 수정 시작: 컨트롤의 별도 bottom 애니메이션 제거. */
+.wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-in ~ .slider-controls {margin:0;bottom:66px;transition:none;will-change:auto;}
+/* KDP-123706 | CSS 수정 끝: 컨트롤의 별도 bottom 애니메이션 제거. */
 .wrap-component.carousel-container.new-carousel-container .component-contents.control-blk .slick-slider.ind-dot ~ .slider-controls .slick-dots li button:after {background:#757575;}
 .wrap-component.carousel-container.new-carousel-container .component-contents.control-blk .slick-slider.ind-dot ~ .slider-controls .slick-dots li.slick-active button:after {background:#fff;}
 .wrap-component.carousel-container.new-carousel-container .component-contents.control-blk .slick-slider.ind-dot ~ .slider-controls .wrap-controls {background:#000;border-color:#000;}
