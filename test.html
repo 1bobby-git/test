@@ -990,7 +990,6 @@
 			<script>
                 if (device.isApp == true) {
                     $('#slideCarousel1').on('init', function(event, slick){
-                        //console.log("data-control : " + slick.$slides[0].dataset.control);
                         try {
                             if(stGbCd == 20 || stGbCd == 30){ //페넷 디플일때
                                 window.secapp.setSecAppGnbTheme('BW');
@@ -1020,26 +1019,6 @@
                     }
                 }
 
-                // slider-controls의 bottom을 현재 슬라이드의 visual-area 높이로 설정
-                function updateSliderControlsBottom(slick) {
-                    var currentSlide = slick.currentSlide || 0;
-                    var $slide = $(slick.$slides[currentSlide]);
-                    var $visualArea = $slide.find('.visual-area');
-                    var $sliderControls = $slide.closest('.component-contents').find('.slider-controls');
-                    if ($visualArea.length && $sliderControls.length) {
-                        $sliderControls.css('bottom', $visualArea.outerHeight() + 'px');
-                    }
-                }
-                function updateSliderControlsBottomById(carouselId) {
-                    var $carousel = $(carouselId);
-                    var $activeSlide = $carousel.find('.slick-active');
-                    var $visualArea = $activeSlide.find('.visual-area');
-                    var $sliderControls = $carousel.closest('.component-contents').find('.slider-controls');
-                    if ($visualArea.length && $sliderControls.length) {
-                        $sliderControls.css('bottom', $visualArea.outerHeight() + 'px');
-                    }
-                }
-
                 function updateTabindex(){
                     $("#slideCarousel1 .slick-slide").each(function (index, item) {
                         var $item = $(item);
@@ -1056,11 +1035,9 @@
                 $("#slideCarousel1").on({
                     init: function(event, slick){
                         updateTabindex();
-                        updateSliderControlsBottom(slick);
                     }
                 , afterChange: function(event, slick, currentSlide){
                         updateTabindex();
-                        updateSliderControlsBottom(slick);
                     }
                 });
 
@@ -1085,13 +1062,11 @@
                         }
                     }
 
-                    //$('#slideCarousel1').slick('slickSetOption', { dots: ctindi_5250992, arrows: ctarrow_5250992 }, true);
                     if (ctindi_5250992){
                         $('#slideCarousel1').parent().find('.slider-controls').removeClass('hide');
                     } else {
                         $('#slideCarousel1').parent().find('.slider-controls').addClass('hide');
                     }
-                    updateSliderControlsBottomById('#slideCarousel1');
                 });
 
                 $(function(){
@@ -1099,9 +1074,7 @@
                         afterChange : function(event, slick, currentSlide) {
 
                             var videoWrap = $(slick.$slides[currentSlide])[0];
-                            //console.log("data-control : " + videoWrap.dataset.control);
 
-                            // Native App Script(wht:로고 화이트, 투명 바탕 , blk:로고 블랙, 투명 바탕)
                             if (navigator.userAgent.indexOf('SECAPP') > -1||navigator.userAgent.indexOf('SECTEST') > -1) {
                                 try {
                                     if(stGbCd == 20 || stGbCd == 30){ //페넷 디플일때
@@ -1319,11 +1292,9 @@
 			$("#slideCarousel2").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1352,7 +1323,6 @@
 				} else {
 					$('#slideCarousel2').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel2');
 			});
 
 				$(function(){
@@ -1563,11 +1533,9 @@
 			$("#slideCarousel3").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1596,7 +1564,6 @@
 				} else {
 					$('#slideCarousel3').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel3');
 			});
 
 				$(function(){
@@ -1626,6 +1593,38 @@
 					});
 				});
 			</script>
+			<!-- s: ind-in -->
+			<script>
+				(function ($slider) {
+					var frame = null;
+					function update() {
+						if (frame || !$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+						frame = requestAnimationFrame(function () {
+							frame = null;
+							if (!$slider.is('.slider-carousel-visual.ind-in.slick-initialized')) return;
+							var slick = $slider.slick('getSlick');
+							var visual = slick.$slides[slick.currentSlide];
+							var controls = $slider.siblings('.slider-controls')[0];
+							var parent = controls && controls.offsetParent;
+							if (!visual || !controls || !parent ||
+								!visual.getClientRects().length || !controls.getClientRects().length ||
+								!parent.getClientRects().length) return;
+							var visualRect = visual.getBoundingClientRect();
+							if (!visualRect.height) return;
+							var parentBottom = parent.getBoundingClientRect().top + parent.clientTop + parent.clientHeight - parent.scrollTop;
+							var marginBottom = parseFloat(getComputedStyle(controls).marginBottom) || 0;
+							// 기준 높이 800, 현재 .visual 높이 600(상단 동일), 마진 0이면 bottom 266; 높이 800이면 66.
+							controls.style.bottom = (parentBottom - visualRect.bottom + 66 - marginBottom) + 'px';
+						});
+					}
+					$slider.on('init.indInVisualControls afterChange.indInVisualControls setPosition.indInVisualControls reInit.indInVisualControls', update);
+					window.addEventListener('resize', update);
+					$slider[0].addEventListener('load', update, true);
+					$slider[0].addEventListener('loadedmetadata', update, true);
+					update(); // 기존 초기화가 이미 끝난 상태도 적용
+				})($('#slideCarousel3'));
+			</script>
+        	<!-- e: ind-in -->
 		</div>
 		<!-- e : 컴포넌트2 -->
 
@@ -1807,11 +1806,9 @@
 			$("#slideCarousel4").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -1840,7 +1837,6 @@
 				} else {
 					$('#slideCarousel4').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel4');
 			});
 
 				$(function(){
@@ -1879,7 +1875,7 @@
 				style="background-color: #fff"
 				data-cptnm="컴포넌트4 - 브라이트코브">
 				<!-- s: slider-carousel-visual -->
-				<div class="slider-carousel-visual gt-slide ind-in ind-dot arr-circle s3000"
+				<div class="slider-carousel-visual gt-slide ind-out ind-dot arr-circle s3000"
 					id="slideCarousel5"
 					data-indcthemeclassnm="ind-dot"
 					data-indcthememclassnm="ind-dot">
@@ -2044,11 +2040,9 @@
 			$("#slideCarousel5").on({
 				init: function(event, slick){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			, afterChange: function(event, slick, currentSlide){
 					updateTabindex();
-					updateSliderControlsBottom(slick);
 				}
 			});
 
@@ -2077,7 +2071,6 @@
 				} else {
 					$('#slideCarousel5').parent().find('.slider-controls').addClass('hide');
 				}
-				updateSliderControlsBottomById('#slideCarousel5');
 			});
 
 				$(function(){
