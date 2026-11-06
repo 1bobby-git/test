@@ -7175,11 +7175,7 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 
 
 /* KDP-123706 */
-/*
-.wrap-component.new-carousel-container.carousel-container .component-contents .slick-slide {}
-.wrap-component.new-carousel-container.carousel-container .component-contents .slick-slider {height:auto;min-height:640px;}
-*/
-.wrap-component.carousel-container.new-carousel-container .component-contents {/*min-height:810px;*/height:auto;}
+.wrap-component.carousel-container.new-carousel-container .component-contents {height:auto;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider {height:100%;min-height:640px;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-arrow {width:56px;height:56px;transition:top .1s;box-shadow:none;background-color:transparent;background-repeat:no-repeat;background-position:50% 50%;background-size: cover;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider .slick-arrow.slick-prev {left:0;}
@@ -7206,7 +7202,7 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-dot ~ .slider-controls .slick-dots li,
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slider.ind-dot ~ .slider-controls .slick-dots li ~ li {margin:0;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-list {height:100%;}
-.wrap-component.carousel-container.new-carousel-container .component-contents .slick-track {display:flex;align-items:flex-start;/*height:auto !important;*/min-height:0;}
+.wrap-component.carousel-container.new-carousel-container .component-contents .slick-track {display:flex;align-items:flex-start;min-height:0;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slick-slide.visual {display:grid;grid-template-columns: minmax(0,1fr);grid-template-rows:auto auto auto;grid-template-areas:"title" "image" "disc";gap:0;align-content:start;height:auto;min-height:0;will-change:opacity;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls {margin-top:50px;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls .slide-btn {margin-left:0;}
@@ -7257,6 +7253,7 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 .wrap-component.carousel-container.new-carousel-container .component-contents .component-text .box-title .sub.above {display:none;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .component-text .box-title .desc {padding-top:25px;font-weight:400;font-size:20px;letter-spacing:-.2px;line-height:28px;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .component-text .box-disc {grid-area:disc;position:static;min-width:0;height:auto;margin-top:20px;font-weight:400;font-size:14px;letter-spacing:-.5px;line-height:18px;}
+.wrap-component.carousel-container.new-carousel-container .component-contents .component-text .hidden {display:none;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .component-text[class*='txt-mid-']:before {content:none;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .visual-area {position:static;min-width:0;height:auto;margin-top:50px;}
 .wrap-component.carousel-container.new-carousel-container .component-contents .visual-area {grid-area:image;position:static;min-width:0;}
@@ -7299,4 +7296,18 @@ body:has(#mask) .popup-comp-player .popup-component-contents .component-head .po
 	.wrap-component.carousel-container.new-carousel-container .component-contents .slider-controls {margin-top: 32px;}
 	.wrap-component.carousel-container.new-carousel-container .component-contents .visual-area {margin-top:32px;}
 	.wrap-component.carousel-container.new-carousel-container .component-contents.type-video .component-text .box-disc {padding:0 20px;}
+}
+/* KDP-123706 | CSS 추가 시작: 영상의 absolute 배치 기준과 원본 반응형 높이 복원. */
+.wrap-component.carousel-container.new-carousel-container .component-contents .visual-area.vdoDim {
+    position: relative;
+    height: 640px;
+}
+@media screen and (max-width: 1100px) {
+    .wrap-component.carousel-container.new-carousel-container .component-contents .visual-area.vdoDim {height: 400px;}
+}
+@media screen and (max-width: 800px) {
+    .wrap-component.carousel-container.new-carousel-container .component-contents .visual-area.vdoDim {height: 300px;}
+}
+@media screen and (max-width: 540px) {
+    .wrap-component.carousel-container.new-carousel-container .component-contents .visual-area.vdoDim {height: 70vh;}
 }
