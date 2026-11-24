@@ -2,7 +2,7 @@
 
 /* KDP-144981 */
 .wrap-component.new-component-v2.feature-full-bleed .mo-ver {display:none;}
-.wrap-component.new-component-v2.feature-full-bleed .btn-round {height:40px;border-radius:20px 20px;padding: 0 24px;font-size:14px;font-weight:700;letter-spacing:0;line-height:19px;}
+.wrap-component.new-component-v2.feature-full-bleed .btn-round {min-height:40px;height:auto;border-radius:20px 20px;padding: 0 24px;font-size:14px;font-weight:700;letter-spacing:0;line-height:19px;}
 .wrap-component.new-component-v2.feature-full-bleed .btn-underline {border-bottom-width:1px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-top-left,
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-mid-left,
@@ -22,10 +22,18 @@
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-left,
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-center,
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-right {--vertical-property-align:flex-end;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img {width:100%;height:100%;object-fit:cover;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {display:flex;justify-content: var(--horizontal-property-align);align-items: var(--vertical-property-align);}
+/* s: KDP-144981 전 해상도 텍스트 잘림 개선 */
+.wrap-component.new-component-v2.feature-full-bleed .component-contents {display:grid;grid-template-columns:minmax(0, 1fr);grid-template-rows:auto;position:relative;height:auto;max-height:none;isolation:isolate;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents > .component-text,
+.wrap-component.new-component-v2.feature-full-bleed .component-contents > .visual-area {grid-area:1 / 1;position:relative;inset:auto;transform:none;width:100%;min-width:0;height:auto;max-height:none;margin:0;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents > .visual-area {align-self:start;z-index:0;overflow:hidden;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img {display:block;width:100%;height:auto;max-height:none;object-fit:cover;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m,
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:none;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents > .component-text {display:flex;align-self:stretch;z-index:1;max-width:none;overflow:visible;justify-content: var(--horizontal-property-align);align-items: var(--vertical-property-align);}
+/* e: KDP-144981 전 해상도 텍스트 잘림 개선 */
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text:before {content:none;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {display:flex;flex-direction:column;flex: 1 1 auto;height: fit-content;padding:50px 80px;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {display:flex;flex-direction:column;flex: 1 1 auto;box-sizing:border-box;min-width:0;max-width:100%;height:auto;max-height:none;overflow:visible;overflow-wrap:anywhere;padding:50px 80px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo {display:flex;justify-content: var(--horizontal-property-align);padding:0;padding-bottom:20px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding:0;padding-bottom:16px;font-size:24px;font-weight:700;line-height:32px;letter-spacing:0;text-align:var(--text-alignment);}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.below {padding:0;padding-bottom:20px;font-size:24px;font-weight:400;line-height:32px;letter-spacing:0;text-align:var(--text-alignment);}
@@ -34,17 +42,15 @@
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title + .box-btns {padding:0;padding-bottom:20px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title > h3:first-child {margin:0;padding:0;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul {display:flex;margin:0;justify-content: var(--horizontal-property-align);}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li {margin:0;height:auto;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button {margin:0 12px;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li {display:flex;flex-wrap:wrap;justify-content:var(--horizontal-property-align);align-items:center;row-gap:12px;min-width:0;max-width:100%;margin:0;height:auto;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button {min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;margin:0 12px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button:first-of-type {margin-left:0;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button:last-of-type {margin-right:0;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-disc {margin:0;}
 @media screen and (max-width: 1100px) {
 }
 @media screen and (max-width: 801px) {
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {position:relative;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {width:100%;height:auto;flex:1;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {position:absolute;left:0;top:0;right:0;bottom:0;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {width:100%;flex:1;}
 
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo {padding-bottom:18px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding-bottom:12px;font-size:16px;letter-spacing:-.05px;line-height:21px;}
@@ -56,6 +62,11 @@
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {min-height:360px;}
 }
 @media screen and (max-width: 800px) {
+	.wrap-component.new-component-v2.feature-full-bleed .mo-ver {display:block;}
+	.wrap-component.new-component-v2.feature-full-bleed .pc-ver {display:none;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img:not(.obj-m) {display:none;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m,
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {padding:0;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > *:not(.obj-m) {display:none;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding-bottom:3.333vw;font-size:5vw;letter-spacing:-0.014vw;line-height:6.389vw;}
@@ -64,7 +75,8 @@
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .desc {padding-bottom:6.667vw;font-size:4.444vw;letter-spacing:-0.014vw;line-height:5.833vw;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button {margin:0 2.222vw;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {padding:11.111vw 6.667vw;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {min-height:133.333vw;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {aspect-ratio:3 / 4;min-height:133.333vw;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img {position:absolute;inset:0;height:100%;}
 }
 @media screen and (max-width: 360px) {
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding-bottom:12px;font-size:18px;letter-spacing:-.05px;line-height:23px;}
@@ -75,69 +87,3 @@
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {padding:40px 24px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {min-height:480px;}
 }
-
-/* s: KDP-144981 - 모바일 텍스트 잘림 개선 */
-@media screen and (max-width: 801px) {
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto;
-    height: auto;
-    max-height: none;
-  }
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .component-text,
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
-    grid-area: 1 / 1;
-    position: relative;
-    inset: auto;
-    width: 100%;
-    min-width: 0;
-    height: auto;
-    max-height: none;
-    margin: 0;
-  }
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .component-text {
-    align-self: stretch;
-    z-index: 1;
-    overflow: visible;
-  }
-  .wrap-component.new-component-v2.feature-full-bleed .component-text .component-text-inner {
-    min-width: 0;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    overflow-wrap: anywhere;
-  }
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
-    align-self: start;
-    z-index: 0;
-    overflow: hidden;
-    min-height: 360px;
-    /* 801px: PC 배너 원본 비율로 이미지 높이 산정 */
-  }
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area > img {
-    width: 100%;
-    height: auto;
-    max-height: none;
-    object-fit: cover;
-  }
-}
-@media screen and (max-width: 800px) {
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
-    /* 기존 133.333vw(3:4) 이미지 영역 유지 */
-    aspect-ratio: 3 / 4;
-    height: 133.333vw;
-    min-height: 133.333vw;
-  }
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area > img {
-    height: 100%;
-  }
-}
-@media screen and (max-width: 360px) {
-  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
-    /* 기존 최소 높이 480px 유지 */
-    height: 480px;
-    min-height: 480px;
-  }
-}
-/* e: KDP-144981 */
