@@ -24,13 +24,11 @@
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-right {--vertical-property-align:flex-end;}
 /* s: KDP-144981 전 해상도 텍스트 잘림 개선 */
 .wrap-component.new-component-v2.feature-full-bleed .component-contents {display:grid;grid-template-columns:minmax(0, 1fr);grid-template-rows:auto;position:relative;height:auto;max-height:none;isolation:isolate;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents > .component-text,
-.wrap-component.new-component-v2.feature-full-bleed .component-contents > .visual-area {grid-area:1 / 1;position:relative;inset:auto;transform:none;width:100%;min-width:0;height:auto;max-height:none;margin:0;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents > .visual-area {align-self:start;z-index:0;overflow:hidden;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {grid-area:1 / 1;position:relative;inset:auto;transform:none;align-self:start;z-index:0;width:100%;min-width:0;height:auto;max-height:none;margin:0;overflow:hidden;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img {display:block;width:100%;height:auto;max-height:none;object-fit:cover;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m,
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m {display:none;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:none;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents > .component-text {display:flex;align-self:stretch;z-index:1;max-width:none;overflow:visible;justify-content: var(--horizontal-property-align);align-items: var(--vertical-property-align);}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {display:flex;grid-area:1 / 1;position:relative;inset:auto;transform:none;align-self:stretch;z-index:1;width:100%;min-width:0;max-width:none;height:auto;max-height:none;margin:0;overflow:visible;justify-content: var(--horizontal-property-align);align-items: var(--vertical-property-align);}
 /* e: KDP-144981 전 해상도 텍스트 잘림 개선 */
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text:before {content:none;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {display:flex;flex-direction:column;flex: 1 1 auto;box-sizing:border-box;min-width:0;max-width:100%;height:auto;max-height:none;overflow:visible;overflow-wrap:anywhere;padding:50px 80px;}
@@ -50,22 +48,20 @@
 @media screen and (max-width: 1100px) {
 }
 @media screen and (max-width: 801px) {
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {width:100%;flex:1;}
-
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo {padding-bottom:18px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding-bottom:12px;font-size:16px;letter-spacing:-.05px;line-height:21px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.below {padding-bottom:28px;font-size:16px;letter-spacing:-.05px;line-height:21px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .title {padding-bottom:12px;font-size:32px;letter-spacing:0;line-height:40px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .desc {padding-bottom:28px;font-size:14px;letter-spacing:-.05px;line-height:18px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-btns > ul > li button {margin:0 8px;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {padding:26px 62px;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {width:100%;flex:1;padding:26px 62px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {min-height:360px;}
 }
 @media screen and (max-width: 800px) {
 	.wrap-component.new-component-v2.feature-full-bleed .mo-ver {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .pc-ver {display:none;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img:not(.obj-m) {display:none;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m,
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {padding:0;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > *:not(.obj-m) {display:none;}
