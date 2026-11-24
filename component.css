@@ -75,3 +75,69 @@
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {padding:40px 24px;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {min-height:480px;}
 }
+
+/* s: KDP-144981 - 모바일 텍스트 잘림 개선 */
+@media screen and (max-width: 801px) {
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    height: auto;
+    max-height: none;
+  }
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .component-text,
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
+    grid-area: 1 / 1;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    max-height: none;
+    margin: 0;
+  }
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .component-text {
+    align-self: stretch;
+    z-index: 1;
+    overflow: visible;
+  }
+  .wrap-component.new-component-v2.feature-full-bleed .component-text .component-text-inner {
+    min-width: 0;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    overflow-wrap: anywhere;
+  }
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
+    align-self: start;
+    z-index: 0;
+    overflow: hidden;
+    min-height: 360px;
+    /* 801px: PC 배너 원본 비율로 이미지 높이 산정 */
+  }
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area > img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: cover;
+  }
+}
+@media screen and (max-width: 800px) {
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
+    /* 기존 133.333vw(3:4) 이미지 영역 유지 */
+    aspect-ratio: 3 / 4;
+    height: 133.333vw;
+    min-height: 133.333vw;
+  }
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area > img {
+    height: 100%;
+  }
+}
+@media screen and (max-width: 360px) {
+  .wrap-component.new-component-v2.feature-full-bleed > .component-contents > .visual-area {
+    /* 기존 최소 높이 480px 유지 */
+    height: 480px;
+    min-height: 480px;
+  }
+}
+/* e: KDP-144981 */
