@@ -22,17 +22,15 @@
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-left,
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-center,
 .wrap-component.new-component-v2.feature-full-bleed .component-contents.txt-btm-right {--vertical-property-align:flex-end;}
-/* s: KDP-144981 전 해상도 텍스트 잘림 개선 */
 .wrap-component.new-component-v2.feature-full-bleed .component-contents {display:grid;grid-template-columns:minmax(0, 1fr);grid-template-rows:auto;position:relative;height:auto;max-height:none;isolation:isolate;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area {grid-area:1 / 1;position:relative;inset:auto;transform:none;align-self:start;z-index:0;width:100%;min-width:0;height:auto;max-height:none;margin:0;overflow:hidden;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img {display:block;width:100%;height:auto;max-height:none;object-fit:cover;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m {display:none;}
-.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:none;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {display:flex;grid-area:1 / 1;position:relative;inset:auto;transform:none;align-self:stretch;z-index:1;width:100%;min-width:0;max-width:none;height:auto;max-height:none;margin:0;overflow:visible;justify-content: var(--horizontal-property-align);align-items: var(--vertical-property-align);}
-/* e: KDP-144981 전 해상도 텍스트 잘림 개선 */
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text:before {content:none;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .component-text-inner {display:flex;flex-direction:column;flex: 1 1 auto;box-sizing:border-box;min-width:0;max-width:100%;height:auto;max-height:none;overflow:visible;overflow-wrap:anywhere;padding:50px 80px;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo {display:flex;justify-content: var(--horizontal-property-align);padding:0;padding-bottom:20px;}
+.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:none;}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding:0;padding-bottom:16px;font-size:24px;font-weight:700;line-height:32px;letter-spacing:0;text-align:var(--text-alignment);}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.below {padding:0;padding-bottom:20px;font-size:24px;font-weight:400;line-height:32px;letter-spacing:0;text-align:var(--text-alignment);}
 .wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .title {padding:0;padding-bottom:35px;font-size:56px;font-weight:700;line-height:74px;letter-spacing:0;text-align:var(--text-alignment);}
@@ -62,8 +60,8 @@
 	.wrap-component.new-component-v2.feature-full-bleed .pc-ver {display:none;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img:not(.obj-m) {display:none;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .visual-area img.obj-m {display:block;}
-	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text {padding:0;}
+	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > .obj-m {display:block;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .logo > *:not(.obj-m) {display:none;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.above {padding-bottom:3.333vw;font-size:5vw;letter-spacing:-0.014vw;line-height:6.389vw;}
 	.wrap-component.new-component-v2.feature-full-bleed .component-contents .component-text .box-title .sub.below {padding-bottom:5.556vw;font-size:5vw;letter-spacing:-0.014vw;line-height:6.389vw;}
